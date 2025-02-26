@@ -42,12 +42,21 @@ public class AdminDashboardController {
     private void editSubject() {
         Subject selected = subjectsTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            TextInputDialog dialog = new TextInputDialog(selected.getName());
-            dialog.setTitle("Edit Subject");
-            dialog.setHeaderText("Modify Subject Name");
-            dialog.setContentText("New Name:");
-            Optional<String> result = dialog.showAndWait();
-            result.ifPresent(selected::setName);
+            TextInputDialog codeDialog = new TextInputDialog(selected.getCode());
+            codeDialog.setTitle("Edit Subject Code");
+            codeDialog.setHeaderText("Modify Subject Code");
+            codeDialog.setContentText("New Code:");
+            Optional<String> codeResult = codeDialog.showAndWait();
+
+            TextInputDialog nameDialog = new TextInputDialog(selected.getName());
+            nameDialog.setTitle("Edit Subject Name");
+            nameDialog.setHeaderText("Modify Subject Name");
+            nameDialog.setContentText("New Name:");
+            Optional<String> nameResult = nameDialog.showAndWait();
+
+            codeResult.ifPresent(selected::setCode);
+            nameResult.ifPresent(selected::setName);
+
             subjectsTable.refresh();
         }
     }
