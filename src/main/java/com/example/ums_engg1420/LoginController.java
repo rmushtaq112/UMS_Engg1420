@@ -38,8 +38,8 @@ public class LoginController {
     private String authenticateUser(String username, String password) {
         if ("admin".equals(username) && "admin123".equals(password)) {
             return "ADMIN";
-        } else if ("user".equals(username) && "user123".equals(password)) {
-            return "USER";
+        } else if ("student".equals(username) && "student123".equals(password)) {
+            return "STUDENT";
         }
         return "INVALID";
     }
@@ -51,7 +51,7 @@ public class LoginController {
             if (role.equals("ADMIN")) {
                 root = FXMLLoader.load(getClass().getResource("AdminDashboard.fxml"));
             } else {
-                root = FXMLLoader.load(getClass().getResource("UserDashboard.fxml"));
+                root = FXMLLoader.load(getClass().getResource("StudentDashboard.fxml"));
             }
             Scene scene = new Scene(root, 600, 400);
             stage.setScene(scene);
