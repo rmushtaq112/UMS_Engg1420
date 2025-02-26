@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="10" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ums_engg1420.UserDashboardController">
+    <children>
+        <Label text="User Dashboard - View Subjects" />
+        <TableView fx:id="subjectsTable">
+            <columns>
+                <TableColumn fx:id="codeColumn" text="Code"/>
+                <TableColumn fx:id="nameColumn" text="Name"/>
+            </columns>
+        </TableView>
+    </children>
+</VBox>
