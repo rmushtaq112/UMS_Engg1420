@@ -1,27 +1,38 @@
 package com.example.ums_engg1420;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 public class Subject {
-    private String code;
-    private String name;
+    private final StringProperty subjectName;
+    private final StringProperty subjectCode;
 
-    public Subject(String code, String name) {
-        this.code = code;
-        this.name = name;
+    public Subject(String name, String code) {
+        this.subjectName = new SimpleStringProperty(name);
+        this.subjectCode = new SimpleStringProperty(code);
     }
 
-    public String getCode() {
-        return code;
+    public String getSubjectName() {
+        return subjectName.get();
     }
 
-    public String getName() {
-        return name;
+    public void setSubjectName(String name) {
+        this.subjectName.set(name);
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public StringProperty subjectNameProperty() {
+        return subjectName;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public String getSubjectCode() {
+        return subjectCode.get();
+    }
+
+    public void setSubjectCode(String code) {
+        this.subjectCode.set(code);
+    }
+
+    public StringProperty subjectCodeProperty() {
+        return subjectCode;
     }
 }

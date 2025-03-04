@@ -1,25 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" spacing="10" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ums_engg1420.AdminDashboardController">
-    <children>
-        <Label text="Admin Dashboard - Subject Management" />
-        <HBox spacing="5">
-            <TextField fx:id="subjectCodeField" promptText="Subject Code"/>
-            <TextField fx:id="subjectNameField" promptText="Subject Name"/>
-            <Button text="Add Subject" onAction="#addSubject"/>
-        </HBox>
-        <TableView fx:id="subjectsTable">
-            <columns>
-                <TableColumn fx:id="codeColumn" text="Code"/>
-                <TableColumn fx:id="nameColumn" text="Name"/>
-            </columns>
-        </TableView>
-        <HBox spacing="10">
-            <Button text="Edit Subject" onAction="#editSubject"/>
-            <Button text="Delete Subject" onAction="#deleteSubject"/>
-        </HBox>
-    </children>
-</VBox>
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.ums_engg1420.AdminDashboardController">
+
+    <left>
+        <VBox spacing="10" style="-fx-background-color: #2C3E50; -fx-padding: 10;" prefWidth="200">
+            <Label text="Admin Panel" style="-fx-text-fill: white; -fx-font-size: 16px;"/>
+            <Button text="Dashboard" fx:id="btnDashboard" style="-fx-background-color: #3498DB; -fx-text-fill: white;"/>
+            <Button text="Student Management" fx:id="btnStudentManagement" style="-fx-background-color: #3498DB; -fx-text-fill: white;"/>
+            <Button text="Course Management" fx:id="btnCourseManagement" style="-fx-background-color: #3498DB; -fx-text-fill: white;"/>
+            <Button text="Faculty Management" fx:id="btnFacultyManagement" style="-fx-background-color: #3498DB; -fx-text-fill: white;"/>
+            <Button text="Event Management" fx:id="btnEventManagement" style="-fx-background-color: #3498DB; -fx-text-fill: white;"/>
+            <Button text="Subject Management" fx:id="btnSubjectManagement" style="-fx-background-color: #3498DB; -fx-text-fill: white;"/>
+            <Button text="Logout" fx:id="btnLogout" style="-fx-background-color: #E74C3C; -fx-text-fill: white;"/>
+        </VBox>
+    </left>
+
+    <center>
+        <StackPane fx:id="mainContent" style="-fx-padding: 20;">
+            <Label text="Welcome, Admin!" fx:id="lblWelcome" style="-fx-font-size: 18px;"/>
+        </StackPane>
+    </center>
+
+</BorderPane>

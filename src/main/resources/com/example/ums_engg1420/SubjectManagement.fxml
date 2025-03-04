@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.ums_engg1420.SubjectManagementController"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <VBox spacing="10" alignment="TOP_CENTER">
+        <Label text="Subject Management" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+        <HBox spacing="10">
+            <TextField fx:id="txtSubjectName" promptText="Subject Name"/>
+            <TextField fx:id="txtSubjectCode" promptText="Subject Code"/>
+            <Button text="Add" fx:id="btnAddSubject"/>
+        </HBox>
+
+        <HBox spacing="10">
+            <TextField fx:id="txtSearch" promptText="Search Subjects" />
+            <Button text="Search" fx:id="btnSearch"/>
+        </HBox>
+
+        <TableView fx:id="tblSubjects">
+            <columns>
+                <TableColumn fx:id="colSubjectName" text="Subject Name"/>
+                <TableColumn fx:id="colSubjectCode" text="Subject Code"/>
+            </columns>
+        </TableView>
+
+        <HBox spacing="10">
+            <Button text="Edit" fx:id="btnEditSubject"/>
+            <Button text="Delete" fx:id="btnDeleteSubject"/>
+        </HBox>
+    </VBox>
+</AnchorPane>

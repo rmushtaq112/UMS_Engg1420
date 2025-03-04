@@ -1,71 +1,61 @@
 package com.example.ums_engg1420;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.cell.PropertyValueFactory;
-import java.util.Optional;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+import java.io.IOException;
 
 public class AdminDashboardController {
 
-    @FXML
-    private TextField subjectCodeField, subjectNameField;
-
-    @FXML
-    private TableView<Subject> subjectsTable;
-
-    @FXML
-    private TableColumn<Subject, String> codeColumn, nameColumn;
-
-    private ObservableList<Subject> subjectList = FXCollections.observableArrayList();
+    @FXML private StackPane mainContent;
+    @FXML private Label lblWelcome;
+    @FXML private Button btnDashboard;
+    @FXML private Button btnStudentManagement;
+    @FXML private Button btnCourseManagement;
+    @FXML private Button btnFacultyManagement;
+    @FXML private Button btnEventManagement;
+    @FXML private Button btnSubjectManagement;
+    @FXML private Button btnLogout;
 
     @FXML
     public void initialize() {
-        codeColumn.setCellValueFactory(new PropertyValueFactory<>("code"));
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        subjectsTable.setItems(subjectList);
+        lblWelcome.setText("Welcome, Admin!");
+
+        btnDashboard.setOnAction(e -> loadPage("Dashboard.fxml"));
+        btnStudentManagement.setOnAction(e -> loadPage("StudentManagement.fxml"));
+        btnCourseManagement.setOnAction(e -> loadPage("CourseManagement.fxml"));
+        btnFacultyManagement.setOnAction(e -> loadPage("FacultyManagement.fxml"));
+        btnEventManagement.setOnAction(e -> loadPage("EventManagement.fxml"));
+        btnSubjectManagement.setOnAction(e -> loadPage("SubjectManagement.fxml"));
+
+        btnLogout.setOnAction(e -> logout());
     }
 
-    @FXML
-    private void addSubject() {
-        String code = subjectCodeField.getText();
-        String name = subjectNameField.getText();
-        if (!code.isEmpty() && !name.isEmpty()) {
-            subjectList.add(new Subject(code, name));
-            subjectCodeField.clear();
-            subjectNameField.clear();
+    private void loadPage(String fxmlFile) {
+        try {
+            Parent newPage = FXMLLoader.load(getClass().getResource(fxmlFile));
+            mainContent.getChildren().setAll(newPage);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    @FXML
-    private void editSubject() {
-        Subject selected = subjectsTable.getSelectionModel().getSelectedItem();
-        if (selected != null) {
-            TextInputDialog codeDialog = new TextInputDialog(selected.getCode());
-            codeDialog.setTitle("Edit Subject Code");
-            codeDialog.setHeaderText("Modify Subject Code");
-            codeDialog.setContentText("New Code:");
-            Optional<String> codeResult = codeDialog.showAndWait();
+    private void logout() {
+        Stage stage = (Stage) btnLogout.getScene().getWindow();
+        stage.close();
 
-            TextInputDialog nameDialog = new TextInputDialog(selected.getName());
-            nameDialog.setTitle("Edit Subject Name");
-            nameDialog.setHeaderText("Modify Subject Name");
-            nameDialog.setContentText("New Name:");
-            Optional<String> nameResult = nameDialog.showAndWait();
-
-            codeResult.ifPresent(selected::setCode);
-            nameResult.ifPresent(selected::setName);
-
-            subjectsTable.refresh();
-        }
-    }
-
-    @FXML
-    private void deleteSubject() {
-        Subject selected = subjectsTable.getSelectionModel().getSelectedItem();
-        if (selected != null) {
-            subjectList.remove(selected);
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("LoginPage.fxml"));
+            Stage loginStage = new Stage();
+            loginStage.setTitle("Login");
+            loginStage.setScene(new javafx.scene.Scene(root, 300, 250));
+            loginStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

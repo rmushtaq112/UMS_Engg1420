@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" spacing="10" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ums_engg1420.UserDashboardController">
-    <children>
-        <Label text="User Dashboard - View Subjects" />
-        <TableView fx:id="subjectsTable">
-            <columns>
-                <TableColumn fx:id="codeColumn" text="Code"/>
-                <TableColumn fx:id="nameColumn" text="Name"/>
-            </columns>
-        </TableView>
-    </children>
-</VBox>
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.ums_engg1420.UserDashboardController">
+
+    <left>
+        <VBox spacing="10" style="-fx-background-color: #2C3E50; -fx-padding: 10;" prefWidth="200">
+            <Label text="User Panel" style="-fx-text-fill: white; -fx-font-size: 16px;"/>
+            <Button text="Dashboard" fx:id="btnDashboard" style="-fx-background-color: #3498DB; -fx-text-fill: white;"/>
+            <Button text="My Courses" fx:id="btnMyCourses" style="-fx-background-color: #3498DB; -fx-text-fill: white;"/>
+            <Button text="Subjects" fx:id="btnSubjects" style="-fx-background-color: #3498DB; -fx-text-fill: white;"/>
+            <Button text="Faculty" fx:id="btnFaculty" style="-fx-background-color: #3498DB; -fx-text-fill: white;"/>
+            <Button text="Events" fx:id="btnEvents" style="-fx-background-color: #3498DB; -fx-text-fill: white;"/>
+            <Button text="Logout" fx:id="btnLogout" style="-fx-background-color: #E74C3C; -fx-text-fill: white;"/>
+        </VBox>
+    </left>
+
+    <center>
+        <StackPane fx:id="mainContent" style="-fx-padding: 20;">
+            <Label text="Welcome, User!" fx:id="lblWelcome" style="-fx-font-size: 18px;"/>
+        </StackPane>
+    </center>
+
+</BorderPane>
