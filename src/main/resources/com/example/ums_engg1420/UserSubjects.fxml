@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8.0.171"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.ums_engg1420.UserSubjectsController">
+
+    <top>
+        <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
+            <Label text="Search Subject: " />
+            <TextField fx:id="txtSearch" promptText="Enter Subject Name or Code" />
+            <Button fx:id="btnSearch" text="Search" />
+        </HBox>
+    </top>
+
+    <center>
+        <TableView fx:id="tblSubjects">
+            <columns>
+                <TableColumn fx:id="colSubjectName" text="Subject Name" minWidth="200"/>
+                <TableColumn fx:id="colSubjectCode" text="Subject Code" minWidth="150"/>
+                <TableColumn fx:id="colEnroll" text="Enroll" minWidth="100"/>
+            </columns>
+        </TableView>
+    </center>
+</BorderPane>
