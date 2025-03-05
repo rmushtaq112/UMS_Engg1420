@@ -26,7 +26,7 @@ public class UserDashboardController {
 
         btnDashboard.setOnAction(e -> loadPage("UserDashboardContent.fxml"));
         btnMyCourses.setOnAction(e -> loadPage("MyCourses.fxml"));
-        btnSubjects.setOnAction(e -> loadPage("Subjects.fxml"));
+        btnSubjects.setOnAction(e -> loadPage("UserSubjects.fxml"));
         btnFaculty.setOnAction(e -> loadPage("Faculty.fxml"));
         btnEvents.setOnAction(e -> loadPage("Events.fxml"));
         btnLogout.setOnAction(e -> logout());
@@ -34,10 +34,12 @@ public class UserDashboardController {
 
     private void loadPage(String fxmlFile) {
         try {
-            Parent newPage = FXMLLoader.load(getClass().getResource(fxmlFile));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
+            Parent newPage = loader.load();
             mainContent.getChildren().setAll(newPage);
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace();  // Print error if FXML is not found
+            System.out.println("ERROR: Could not load " + fxmlFile);
         }
     }
 
