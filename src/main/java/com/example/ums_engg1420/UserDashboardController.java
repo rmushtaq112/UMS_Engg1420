@@ -25,7 +25,7 @@ public class UserDashboardController {
         lblWelcome.setText("Welcome, User!");
 
         btnDashboard.setOnAction(e -> loadPage("UserDashboardContent.fxml"));
-        btnMyCourses.setOnAction(e -> loadPage("MyCourses.fxml"));
+        btnMyCourses.setOnAction(e -> loadPage("UserCourseManagement.fxml"));
         btnSubjects.setOnAction(e -> loadPage("UserSubjects.fxml"));
         btnFaculty.setOnAction(e -> loadPage("Faculty.fxml"));
         btnEvents.setOnAction(e -> loadPage("Events.fxml"));
