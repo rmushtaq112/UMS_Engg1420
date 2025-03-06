@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<VBox xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ums_engg1420.CourseManagementController">
+   <children>
+      <VBox prefHeight="40.0" prefWidth="759.0">
+         <children>
+              <Label prefHeight="485.0" prefWidth="176.0" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Course Management">
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Separator minHeight="-Infinity" prefHeight="0.0" prefWidth="601.0">
+               <opaqueInsets>
+                  <Insets left="10.0" right="10.0" />
+               </opaqueInsets>
+            </Separator>
+         </children>
+         <VBox.margin>
+            <Insets bottom="5.0" />
+         </VBox.margin>
+      </VBox>
+      <HBox alignment="CENTER" prefWidth="729.0">
+         <children>
+            <AnchorPane style="-fx-border-color: black; -fx-border-radius: 20; -fx-border-width: 0;">
+            
+                      <VBox alignment="TOP_CENTER" prefWidth="581.0" spacing="10" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox>
+                     <children>
+                  
+                                <HBox prefWidth="450.0" spacing="10">
+                              <TextField fx:id="txtSearch" promptText="Search Subjects" />
+                              <Button fx:id="btnSearch" text="Search" />
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                          </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </VBox.margin>
+                  </VBox>
+            
+                          <TableView fx:id="tblSubjects">
+                        <TableColumn fx:id="colCourseName" text="Course Name" />
+                        <TableColumn fx:id="colCourseCode" text="Course Code" />
+                        <TableColumn fx:id="colSubjectCode" text="Subject Code" />
+                        <TableColumn fx:id="colSectionNumber" text="Section Number" />
+                        <TableColumn fx:id="colCapacity" text="Capacity" />
+                        <TableColumn fx:id="colLectureTime" text="Lecture Time" />
+                        <TableColumn fx:id="colFinalExamDate" text="Final Exam Date/Time" />
+                        <TableColumn fx:id="colLocation" text="Location" />
+                        <TableColumn fx:id="colTeacherName" text="Teacher Name" />
+                     <VBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </VBox.margin>
+                     <columns>
+                        <TableColumn prefWidth="84.00000286102295" text="Course Name" />
+                        <TableColumn prefWidth="90.6666488647461" text="Course Code" />
+                        <TableColumn prefWidth="71.33329772949219" text="Subject" />
+                        <TableColumn prefWidth="66.66668701171875" text="Section" />
+                        <TableColumn prefWidth="66.66668701171875" text="Location" />
+                        <TableColumn prefWidth="51.33331298828125" text="Time" />
+                        <TableColumn prefWidth="51.33331298828125" text="Capacity" />
+                        <TableColumn prefWidth="65.33328247070312" text="Teacher(s)" />
+                        <TableColumn prefWidth="65.0" text="Exam Time" />
+                     </columns>
+                    </TableView>
+            
+                          <HBox spacing="10">
+                        <Button fx:id="btnEditSubject" text="Edit" />
+                        <Button fx:id="btnDeleteSubject" text="Delete" />
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" />
+                     </VBox.margin>
+                    </HBox>
+                </VBox>
+            </AnchorPane>
+            <Separator orientation="VERTICAL" prefHeight="460.0" />
+            <AnchorPane>
+               <children>
+                  <TextField fx:id="txtSubjectCode" layoutX="9.0" layoutY="57.0" prefHeight="36.0" prefWidth="235.0" promptText="Subject Name" />
+                  <TextField fx:id="txtCourseName" layoutX="9.0" layoutY="14.0" prefHeight="36.0" prefWidth="116.0" promptText="Course Name" />
+                  <TextField fx:id="txtCourseCode" layoutX="137.0" layoutY="14.0" prefHeight="36.0" prefWidth="107.0" promptText="Course Code" />
+                  <TextField fx:id="txtSectionNumber" layoutX="9.0" layoutY="102.0" prefHeight="36.0" prefWidth="123.0" promptText="Section Number" />
+                  <TextField fx:id="txtCapacity" layoutX="147.0" layoutY="188.0" prefHeight="36.0" prefWidth="97.0" promptText="Capacity" />
+                  <TextField fx:id="txtLectureTime" layoutX="9.0" layoutY="188.0" prefHeight="36.0" prefWidth="136.0" promptText="Lecture Time" />
+                  <TextField fx:id="txtFinalExamDate" layoutX="9.0" layoutY="273.0" prefHeight="36.0" promptText="Final Exam Date/Time" />
+                  <TextField fx:id="txtLocation" layoutX="9.0" layoutY="145.0" prefHeight="36.0" prefWidth="235.0" promptText="Location" />
+                  <TextField fx:id="txtTeacherName" layoutX="9.0" layoutY="230.0" prefHeight="36.0" promptText="Teacher Name" />
+                  <Button fx:id="btnAddSubject1" layoutX="206.0" layoutY="433.0" text="Add" />
+               </children>
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding>
+            </AnchorPane>
+         </children>
+      </HBox>
+   </children>
+</VBox>
