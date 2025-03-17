@@ -22,6 +22,9 @@ public class SubjectManagementController {
 
     @FXML
     public void initialize() {
+        // Load data from file when the app starts
+        subjectList.addAll(DataPersistence.loadData());
+
         colSubjectName.setCellValueFactory(cellData -> cellData.getValue().subjectNameProperty());
         colSubjectCode.setCellValueFactory(cellData -> cellData.getValue().subjectCodeProperty());
 
@@ -49,7 +52,10 @@ public class SubjectManagementController {
             }
         }
 
-        subjectList.add(new Subject(name, code));
+        Subject newSubject = new Subject(name, code);
+        subjectList.add(newSubject);
+        DataPersistence.saveData(subjectList); // Save data to file after adding
+
         txtSubjectName.clear();
         txtSubjectCode.clear();
     }
@@ -58,6 +64,7 @@ public class SubjectManagementController {
         Subject selected = tblSubjects.getSelectionModel().getSelectedItem();
         if (selected != null) {
             subjectList.remove(selected);
+            DataPersistence.saveData(subjectList); // Save data to file after deletion
         } else {
             showAlert("Error", "No subject selected for deletion.");
         }
@@ -69,6 +76,7 @@ public class SubjectManagementController {
             selected.setSubjectName(txtSubjectName.getText());
             selected.setSubjectCode(txtSubjectCode.getText());
             tblSubjects.refresh();
+            DataPersistence.saveData(subjectList); // Save data to file after editing
         } else {
             showAlert("Error", "No subject selected for editing.");
         }
