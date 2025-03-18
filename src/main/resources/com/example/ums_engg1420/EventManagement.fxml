@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.collections.FXCollections?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.ums_engg1420.EventManagementController"
+            prefHeight="600.0" prefWidth="800.0">
+
+    <VBox spacing="10" alignment="TOP_CENTER">
+        <Label text="Event Management" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+        <!-- Calendar View -->
+        <HBox spacing="10">
+            <DatePicker fx:id="eventCalendar" />
+            <Button text="View Events" fx:id="btnViewCalendar"/>
+        </HBox>
+
+        <!-- Search & Filtering Options -->
+        <HBox spacing="10">
+            <TextField fx:id="txtSearch" promptText="Search Events"/>
+            <ComboBox fx:id="filterOptions">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <TextField>All</TextField>
+                        <TextField>Upcoming</TextField>
+                        <TextField>Past</TextField>
+                    </FXCollections>
+                </items>
+            </ComboBox>
+            <Button text="Search" fx:id="btnSearch"/>
+        </HBox>
+
+        <!-- List View of Events -->
+        <TableView fx:id="tblEvents">
+            <columns>
+                <TableColumn fx:id="colEventName" text="Event Name" />
+                <TableColumn fx:id="colEventDate" text="Date &amp; Time" />
+                <TableColumn fx:id="colLocation" text="Location" />
+                <TableColumn fx:id="colCapacity" text="Capacity" />
+                <TableColumn fx:id="colCost" text="Cost" />
+            </columns>
+        </TableView>
+
+        <!-- Event Management Actions -->
+        <HBox spacing="10">
+            <Button text="Add Event" fx:id="btnAddEvent" onAction="#addEvent"/>
+            <Button text="Edit Event" fx:id="btnEditEvent" onAction="#editEvent"/>
+            <Button text="Delete Event" fx:id="btnDeleteEvent" onAction="#deleteEvent"/>
+            <Button text="Manage Registrations" fx:id="btnManageRegistrations" onAction="#manageRegistrations"/>
+        </HBox>
+
+        <!-- Event Details Input Fields -->
+        <VBox spacing="5">
+            <TextField fx:id="eventNameField" promptText="Event Name"/>
+            <TextField fx:id="eventCodeField" promptText="Event Code"/>
+            <TextField fx:id="locationField" promptText="Location"/>
+            <TextField fx:id="dateTimeField" promptText="Date &amp; Time"/>
+            <TextField fx:id="capacityField" promptText="Capacity"/>
+            <TextField fx:id="costField" promptText="Cost"/>
+            <TextArea fx:id="descriptionField" promptText="Description" prefRowCount="3"/>
+        </VBox>
+
+        <HBox spacing="10">
+            <Button text="Save" fx:id="btnSaveEvent" onAction="#saveEvent"/>
+            <Button text="Cancel" fx:id="btnCancel" onAction="#cancelEvent"/>
+        </HBox>
+    </VBox>
+</AnchorPane>

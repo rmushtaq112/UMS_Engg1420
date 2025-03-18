@@ -2,6 +2,7 @@ module com.example.ums_engg1420 {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.logging;
+    requires java.sql;
 
     requires org.controlsfx.controls;
     requires org.kordamp.bootstrapfx.core;
