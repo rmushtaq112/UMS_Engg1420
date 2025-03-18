@@ -2,6 +2,7 @@ package com.example.ums_engg1420;
 
 //Import JavaFX Packages
 
+import com.example.ums_engg1420.dataclasses.Course;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;

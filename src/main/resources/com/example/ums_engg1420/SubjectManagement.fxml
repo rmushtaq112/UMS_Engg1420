@@ -1,37 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.ums_engg1420.SubjectManagementController"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ums_engg1420.subjectsmodule.AdminSubjectsController">
 
-    <VBox spacing="10" alignment="TOP_CENTER">
-        <Label text="Subject Management" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+    <VBox alignment="TOP_CENTER" spacing="10">
+        <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Subject Management" />
 
         <HBox spacing="10">
-            <TextField fx:id="txtSubjectName" promptText="Subject Name"/>
-            <TextField fx:id="txtSubjectCode" promptText="Subject Code"/>
-            <Button text="Add" fx:id="btnAddSubject"/>
+            <TextField fx:id="txtSubjectName" promptText="Subject Name" />
+            <TextField fx:id="txtSubjectCode" promptText="Subject Code" />
+            <Button fx:id="btnAddSubject" text="Add" />
         </HBox>
 
         <HBox spacing="10">
             <TextField fx:id="txtSearch" promptText="Search Subjects" />
-            <Button text="Search" fx:id="btnSearch"/>
+            <Button fx:id="btnSearch" text="Search" />
         </HBox>
 
         <TableView fx:id="tblSubjects">
             <columns>
-                <TableColumn fx:id="colSubjectName" text="Subject Name"/>
-                <TableColumn fx:id="colSubjectCode" text="Subject Code"/>
+                <TableColumn fx:id="colSubjectName" text="Subject Name" />
+                <TableColumn fx:id="colSubjectCode" text="Subject Code" />
             </columns>
         </TableView>
 
         <HBox spacing="10">
-            <Button text="Edit" fx:id="btnEditSubject"/>
-            <Button text="Delete" fx:id="btnDeleteSubject"/>
+            <Button fx:id="btnEditSubject" text="Edit" />
+            <Button fx:id="btnDeleteSubject" text="Delete" />
         </HBox>
     </VBox>
 </AnchorPane>

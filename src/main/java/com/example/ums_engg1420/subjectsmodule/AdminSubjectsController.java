@@ -1,11 +1,18 @@
-package com.example.ums_engg1420;
+package com.example.ums_engg1420.subjectsmodule;
 
+import com.example.ums_engg1420.DataPersistence;
+import com.example.ums_engg1420.dataclasses.Subject;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-public class SubjectManagementController {
+import java.util.List;
+
+import static com.example.ums_engg1420.dataparsers.SubjectDataHandler.*;
+
+public class AdminSubjectsController extends SubjectModuleInitializer{
 
     @FXML private TextField txtSubjectName;
     @FXML private TextField txtSubjectCode;
@@ -18,22 +25,20 @@ public class SubjectManagementController {
     @FXML private Button btnEditSubject;
     @FXML private Button btnDeleteSubject;
 
-    private ObservableList<Subject> subjectList = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
-        // Load data from file when the app starts
-        subjectList.addAll(DataPersistence.loadSubjects());  // Use the correct method for loading subjects
+        tableInitialize(colSubjectCode, colSubjectName);
 
-        colSubjectName.setCellValueFactory(cellData -> cellData.getValue().subjectNameProperty());
-        colSubjectCode.setCellValueFactory(cellData -> cellData.getValue().subjectCodeProperty());
+        tblSubjects.setItems(subjects);
 
-        tblSubjects.setItems(subjectList);
+        if (btnSearch != null) {
+            btnSearch.setOnAction(e -> searchSubjects());
+        }
 
         btnAddSubject.setOnAction(e -> addSubject());
         btnDeleteSubject.setOnAction(e -> deleteSubject());
-        btnEditSubject.setOnAction(e -> editSubject());
-        btnSearch.setOnAction(e -> searchSubjects());
+//        btnEditSubject.setOnAction(e -> editSubject());
     }
 
     private void addSubject() {
@@ -45,17 +50,13 @@ public class SubjectManagementController {
             return;
         }
 
-        // Check if the subject code is unique
-        for (Subject subject : subjectList) {
-            if (subject.getSubjectCode().equals(code)) {
-                showAlert("Error", "Subject Code must be unique!");
-                return;
-            }
-        }
-
         Subject newSubject = new Subject(name, code);
-        subjectList.add(newSubject);
-        DataPersistence.saveSubjects(subjectList);  // Use the correct method to save subjects
+        try {
+            writeNewSubject(newSubject);
+        } catch (Exception DuplicateEntryException) {
+            showAlert("Error", "Subject already exists!");
+        }
+        refreshEntries(tblSubjects);
 
         txtSubjectName.clear();
         txtSubjectCode.clear();
@@ -64,34 +65,32 @@ public class SubjectManagementController {
     private void deleteSubject() {
         Subject selected = tblSubjects.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            subjectList.remove(selected);
-            DataPersistence.saveSubjects(subjectList);  // Use the correct method to save subjects
+            removeSubject(subjects.indexOf(selected) + 1);
+            refreshEntries(tblSubjects);
         } else {
             showAlert("Error", "No subject selected for deletion.");
         }
     }
 
-    private void editSubject() {
-        Subject selected = tblSubjects.getSelectionModel().getSelectedItem();
-        if (selected != null) {
-            selected.setSubjectName(txtSubjectName.getText());
-            selected.setSubjectCode(txtSubjectCode.getText());
-            tblSubjects.refresh();
-            DataPersistence.saveSubjects(subjectList);  // Use the correct method to save subjects
-        } else {
-            showAlert("Error", "No subject selected for editing.");
-        }
-    }
+//    private void editSubject() {
+//        Subject selected = tblSubjects.getSelectionModel().getSelectedItem();
+//        if (selected != null) {
+//            selected.setSubjectName(txtSubjectName.getText());
+//            selected.setSubjectCode(txtSubjectCode.getText());
+//        } else {
+//            showAlert("Error", "No subject selected for editing.");
+//        }
+//    }
 
     private void searchSubjects() {
         String keyword = txtSearch.getText().toLowerCase();
         if (keyword.isEmpty()) {
-            tblSubjects.setItems(subjectList);
+            tblSubjects.setItems(subjects);
             return;
         }
 
         ObservableList<Subject> filteredList = FXCollections.observableArrayList();
-        for (Subject subject : subjectList) {
+        for (Subject subject : subjects) {
             if (subject.getSubjectName().toLowerCase().contains(keyword) ||
                     subject.getSubjectCode().toLowerCase().contains(keyword)) {
                 filteredList.add(subject);

@@ -1,4 +1,4 @@
-package com.example.ums_engg1420;
+package com.example.ums_engg1420.dataclasses;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;

@@ -1,17 +1,10 @@
 package com.example.ums_engg1420;
-import com.example.ums_engg1420.Course;
+import com.example.ums_engg1420.dataclasses.Course;
 
 //Import JavaFX Packages
 import javafx.fxml.FXML;
-import javafx.beans.*;
-import javafx.collections.FXCollections;
-import javafx.collections.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
-
-import java.util.Collections;
-import java.util.List;
 
 public class CourseManagementController {
     //Initialize Variables
