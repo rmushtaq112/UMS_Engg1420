@@ -23,7 +23,7 @@ public class SubjectManagementController {
     @FXML
     public void initialize() {
         // Load data from file when the app starts
-        subjectList.addAll(DataPersistence.loadData());
+        subjectList.addAll(DataPersistence.loadSubjects());  // Use the correct method for loading subjects
 
         colSubjectName.setCellValueFactory(cellData -> cellData.getValue().subjectNameProperty());
         colSubjectCode.setCellValueFactory(cellData -> cellData.getValue().subjectCodeProperty());
@@ -45,6 +45,7 @@ public class SubjectManagementController {
             return;
         }
 
+        // Check if the subject code is unique
         for (Subject subject : subjectList) {
             if (subject.getSubjectCode().equals(code)) {
                 showAlert("Error", "Subject Code must be unique!");
@@ -54,7 +55,7 @@ public class SubjectManagementController {
 
         Subject newSubject = new Subject(name, code);
         subjectList.add(newSubject);
-        DataPersistence.saveData(subjectList); // Save data to file after adding
+        DataPersistence.saveSubjects(subjectList);  // Use the correct method to save subjects
 
         txtSubjectName.clear();
         txtSubjectCode.clear();
@@ -64,7 +65,7 @@ public class SubjectManagementController {
         Subject selected = tblSubjects.getSelectionModel().getSelectedItem();
         if (selected != null) {
             subjectList.remove(selected);
-            DataPersistence.saveData(subjectList); // Save data to file after deletion
+            DataPersistence.saveSubjects(subjectList);  // Use the correct method to save subjects
         } else {
             showAlert("Error", "No subject selected for deletion.");
         }
@@ -76,7 +77,7 @@ public class SubjectManagementController {
             selected.setSubjectName(txtSubjectName.getText());
             selected.setSubjectCode(txtSubjectCode.getText());
             tblSubjects.refresh();
-            DataPersistence.saveData(subjectList); // Save data to file after editing
+            DataPersistence.saveSubjects(subjectList);  // Use the correct method to save subjects
         } else {
             showAlert("Error", "No subject selected for editing.");
         }

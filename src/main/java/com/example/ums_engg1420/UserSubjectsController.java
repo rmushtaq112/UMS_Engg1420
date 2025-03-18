@@ -11,29 +11,35 @@ public class UserSubjectsController {
     @FXML private TableView<Subject> tblSubjects;
     @FXML private TableColumn<Subject, String> colSubjectName;
     @FXML private TableColumn<Subject, String> colSubjectCode;
-    @FXML private TableColumn<Subject, String> colEnroll;  // FIXED TYPE
+    @FXML private TableColumn<Subject, String> colEnroll;
     @FXML private TextField txtSearch;
     @FXML private Button btnSearch;
 
-    private static ObservableList<Subject> subjectList = FXCollections.observableArrayList();
-    private static ObservableList<Subject> enrolledSubjects = FXCollections.observableArrayList();
+    private ObservableList<Subject> subjectList = FXCollections.observableArrayList();
+    private ObservableList<Subject> enrolledSubjects = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
+        // Load subjects from file
+        subjectList.addAll(DataPersistence.loadSubjects()); // Ensure we load the updated subject list
+        enrolledSubjects.addAll(DataPersistence.loadEnrolledSubjects()); // Load enrolled subjects from file if any
 
+        // Set up table columns
         colSubjectName.setCellValueFactory(cellData -> cellData.getValue().subjectNameProperty());
         colSubjectCode.setCellValueFactory(cellData -> cellData.getValue().subjectCodeProperty());
 
+        // Add Enroll button to each row
         addEnrollButtons();
         tblSubjects.setItems(subjectList);
 
-        if (btnSearch != null) {  // Prevents NullPointerException
+        // Search functionality
+        if (btnSearch != null) {
             btnSearch.setOnAction(e -> searchSubjects());
         }
     }
 
     private void addEnrollButtons() {
-        colEnroll.setCellFactory(param -> new TableCell<>() {
+        colEnroll.setCellFactory(param -> new TableCell<Subject, String>() {
             private final Button enrollButton = new Button("Enroll");
 
             {
@@ -44,7 +50,7 @@ public class UserSubjectsController {
             }
 
             @Override
-            protected void updateItem(String item, boolean empty) {  // FIXED TYPE
+            protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty) {
                     setGraphic(null);
@@ -58,6 +64,7 @@ public class UserSubjectsController {
     private void enrollSubject(Subject subject) {
         if (!enrolledSubjects.contains(subject)) {
             enrolledSubjects.add(subject);
+            DataPersistence.saveEnrolledSubjects(enrolledSubjects);  // Save enrolled subjects to file
             showAlert("Success", "You have enrolled in " + subject.getSubjectName());
         } else {
             showAlert("Info", "You are already enrolled in this subject!");
@@ -91,5 +98,3 @@ public class UserSubjectsController {
         });
     }
 }
-
-
