@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ums_engg1420.StudentManagementController">
+
+    <center>
+        <VBox spacing="10" style="-fx-padding: 20px;">
+            <Label text="Student Management" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+            <HBox spacing="10">
+                <Label text="Student ID:" />
+                <Label fx:id="lblStudentID" text="-" />
+            </HBox>
+
+            <HBox spacing="10">
+                <Label text="Name:" />
+                <Label fx:id="lblName" text="-" />
+            </HBox>
+
+            <HBox spacing="10">
+                <Label text="Email:" />
+                <Label fx:id="lblEmail" text="-" />
+            </HBox>
+
+            <HBox spacing="10">
+                <Label text="Address:" />
+                <TextField fx:id="txtAddress" />
+            </HBox>
+
+            <HBox spacing="10">
+                <Label text="Telephone:" />
+                <TextField fx:id="txtTelephone" />
+            </HBox>
+
+            <HBox spacing="10">
+                <Label text="Profile Photo:" />
+                <ImageView fx:id="imgProfilePhoto" fitHeight="100" fitWidth="100" />
+                <Button fx:id="btnUploadPhoto" text="Upload" />
+            </HBox>
+
+            <HBox spacing="10">
+                <Button fx:id="btnSaveChanges" text="Save Changes" style="-fx-background-color: #27AE60; -fx-text-fill: white;" />
+                <Button fx:id="btnBack" text="Back" style="-fx-background-color: #E74C3C; -fx-text-fill: white;" />
+            </HBox>
+        </VBox>
+    </center>
+
+</BorderPane>

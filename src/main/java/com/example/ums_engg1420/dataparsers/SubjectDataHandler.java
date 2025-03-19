@@ -97,7 +97,7 @@ public class SubjectDataHandler extends DataHandler {
         return false;
     }
 
-    private static void addToData(Subject subject, int rowIndex) {
+    static void addToData(Subject subject, int rowIndex) {
         Row row = subjectSheet.getRow(rowIndex);
 
         if (row == null) {

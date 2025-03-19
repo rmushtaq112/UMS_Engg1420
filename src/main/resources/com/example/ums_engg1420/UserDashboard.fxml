@@ -12,21 +12,23 @@
     <left>
         <VBox prefWidth="200" spacing="10" style="-fx-background-color: #2C3E50; -fx-padding: 10;">
             <Label style="-fx-text-fill: white; -fx-font-size: 16px;" text="User Panel">
-            <font>
-               <Font name="Consolas Bold" size="14.0" />
-            </font></Label>
+                <font>
+                    <Font name="Consolas Bold" size="14.0" />
+                </font>
+            </Label>
             <Button fx:id="btnDashboard" style="-fx-background-color: #3498DB; -fx-text-fill: white;" text="Dashboard" />
             <Button fx:id="btnMyCourses" style="-fx-background-color: #3498DB; -fx-text-fill: white;" text="My Courses" />
             <Button fx:id="btnSubjects" style="-fx-background-color: #3498DB; -fx-text-fill: white;" text="Subjects" />
             <Button fx:id="btnFaculty" style="-fx-background-color: #3498DB; -fx-text-fill: white;" text="Faculty" />
             <Button fx:id="btnEvents" style="-fx-background-color: #3498DB; -fx-text-fill: white;" text="Events" />
+            <Button fx:id="btnStudentManagement" style="-fx-background-color: #27AE60; -fx-text-fill: white;" text="Student Management" />
             <Button fx:id="btnLogout" style="-fx-background-color: #E74C3C; -fx-text-fill: white;" text="Logout" />
         </VBox>
     </left>
 
     <center>
         <StackPane fx:id="mainContent" style="-fx-padding: 20;">
-            <Label fx:id="lblWelcome" style="-fx-font-size: 18px;" text="Welcome, User!" />
+            <Label fx:id="lblWelcome" style="-fx-font-size: 18px;" text="Welcome, Student!" />
         </StackPane>
     </center>
 
