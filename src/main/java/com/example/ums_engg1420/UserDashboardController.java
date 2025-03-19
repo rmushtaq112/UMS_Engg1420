@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import java.io.IOException;
 
@@ -14,6 +15,7 @@ import java.io.IOException;
 public class UserDashboardController {
 
     @FXML private Label lblWelcome;
+    @FXML private StackPane mainContent;
     @FXML private Button btnDashboard;
     @FXML private Button btnMyCourses;
     @FXML private Button btnSubjects;
@@ -26,9 +28,25 @@ public class UserDashboardController {
     public void initialize() {
         lblWelcome.setText("Welcome, Student!");
 
+        //Button Functionalities
+        //btnDashboard.setOnAction((e -> loadPage()));
+        btnMyCourses.setOnAction((e -> loadPage("UserCourseManagement.fxml")));
+        btnSubjects.setOnAction((e -> loadPage("UserSubjects.fxml")));
+        //btnFaculty.setOnAction((e -> loadPage()));
+        //btnEvents.setOnAction((e -> loadPage()));
         // Event handler for Student Management button
         btnStudentManagement.setOnAction(event -> openStudentManagement());
         btnLogout.setOnAction(event -> logout());
+    }
+
+    //Calls on the fxml file to load a page
+    private void loadPage(String fxmlFile) {
+        try {
+            Parent newPage = FXMLLoader.load(getClass().getResource(fxmlFile));
+            mainContent.getChildren().setAll(newPage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void openStudentManagement() {
