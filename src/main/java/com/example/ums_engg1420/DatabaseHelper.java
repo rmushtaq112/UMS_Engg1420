@@ -1,5 +1,7 @@
 package com.example.ums_engg1420;
 
+import com.example.ums_engg1420.dataclasses.Event;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

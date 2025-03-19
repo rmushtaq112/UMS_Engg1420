@@ -5,7 +5,7 @@ module com.example.ums_engg1420 {
     requires org.controlsfx.controls;
     requires org.kordamp.bootstrapfx.core;
     requires org.apache.poi.poi;
-    requires java.logging;
+    requires java.sql;
 
     opens com.example.ums_engg1420 to javafx.fxml;
     exports com.example.ums_engg1420;
@@ -15,5 +15,9 @@ module com.example.ums_engg1420 {
     opens com.example.ums_engg1420.dataclasses to javafx.fxml;
     exports com.example.ums_engg1420.subjectsmodule;
     opens com.example.ums_engg1420.subjectsmodule to javafx.fxml;
+    exports com.example.ums_engg1420.eventsmodule;
+    opens com.example.ums_engg1420.eventsmodule to javafx.fxml;
+    exports com.example.ums_engg1420.coursesmodule;
+    opens com.example.ums_engg1420.coursesmodule to javafx.fxml;
 
 }

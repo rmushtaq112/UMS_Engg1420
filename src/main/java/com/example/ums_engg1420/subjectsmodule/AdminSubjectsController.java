@@ -1,14 +1,10 @@
 package com.example.ums_engg1420.subjectsmodule;
 
-import com.example.ums_engg1420.DataPersistence;
 import com.example.ums_engg1420.dataclasses.Subject;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-
-import java.util.List;
 
 import static com.example.ums_engg1420.dataparsers.SubjectDataHandler.*;
 

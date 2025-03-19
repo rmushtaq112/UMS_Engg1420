@@ -1,11 +1,13 @@
-package com.example.ums_engg1420;
+package com.example.ums_engg1420.eventsmodule;
 
+import com.example.ums_engg1420.DatabaseHelper;
+import com.example.ums_engg1420.dataclasses.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import java.util.List;
 
-public class EventManagementController {
+public class AdminEventController {
     @FXML private VBox eventList;
     @FXML private TextField eventNameField, eventCodeField, locationField, dateTimeField, capacityField, costField;
     @FXML private TextArea descriptionField;

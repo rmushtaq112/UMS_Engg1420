@@ -8,13 +8,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 
+// DataHandler contains constants which are used for retrieving data across different sheets,
+// Also contains methods which can be universally used across different sheets, such as saving or indexing a row
 public class DataHandler {
     protected static final String FILE_PATH = "src/main/resources/com/example/ums_engg1420/UMS_Data.xlsx";
     protected static Workbook workbook;
 
     static { // Creates a workbook from the Excel data file
         try {
-            workbook = WorkbookFactory.create(new FileInputStream(FILE_PATH));
+            workbook = WorkbookFactory.create(new FileInputStream(FILE_PATH)); // Excel file loaded to memory
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -34,7 +36,7 @@ public class DataHandler {
     }
 
     protected static void saveData() {
-        try (FileOutputStream fos = new FileOutputStream(FILE_PATH)) {
+        try (FileOutputStream fos = new FileOutputStream(FILE_PATH)) { // Outputs changed workbook data in memory to file
             workbook.write(fos);
         } catch (IOException e) {
             throw new RuntimeException(e);

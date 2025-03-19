@@ -1,4 +1,4 @@
-package com.example.ums_engg1420;
+package com.example.ums_engg1420.coursesmodule;
 
 //Import JavaFX Packages
 
@@ -8,7 +8,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public class UserCourseManagementController {
+public class UserCourseController {
     //Initialize Variables
 
     @FXML private TableView<Course> tblSubjects;

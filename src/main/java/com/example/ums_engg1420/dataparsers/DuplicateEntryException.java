@@ -1,5 +1,7 @@
 package com.example.ums_engg1420.dataparsers;
 
+
+// Error yields of trying to add an already existing piece of data in the tables
 public class DuplicateEntryException extends RuntimeException {
     private final Object duplicateEntry;
 

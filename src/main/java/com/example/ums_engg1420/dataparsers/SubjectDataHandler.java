@@ -9,7 +9,8 @@ import java.util.Map;
 
 
 public class SubjectDataHandler extends DataHandler {
-    private static final Sheet subjectSheet = workbook.getSheet("Subjects");
+    private static final Sheet subjectSheet = workbook.getSheet("Subjects"); // Retrieves sheet containing subject data
+    // Header data and row index as a map, for example "Subject Name" corresponds to index 0 vvv
     private static final Map<String, Integer> columnIndexMap = getColumnIndexMap(subjectSheet.getRow(0));
 
     // Responsible for turning a row of data in a sheet into a subject object, uses index of all headers in subject sheet
