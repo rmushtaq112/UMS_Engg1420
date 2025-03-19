@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Pos?>
+
+<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.ums_engg1420.AdminStudentManagement" prefHeight="600.0" prefWidth="800.0">
+
+    <!-- Search Bar -->
+    <TextField fx:id="txtSearch" layoutX="20.0" layoutY="20.0" promptText="Search by Name or Student ID" prefWidth="200.0"/>
+    <Button fx:id="btnSearch" text="Search" layoutX="230.0" layoutY="20.0" prefWidth="100.0"/>
+
+    <!-- Buttons for Admin Features -->
+    <Button fx:id="btnAddStudent" text="Add Student" layoutX="20.0" layoutY="60.0" prefWidth="120.0"/>
+    <Button fx:id="btnEditStudent" text="Edit Student" layoutX="150.0" layoutY="60.0" prefWidth="120.0"/>
+    <Button fx:id="btnDeleteStudent" text="Delete Student" layoutX="280.0" layoutY="60.0" prefWidth="120.0"/>
+    <Button text="View Student Profile" layoutX="410.0" layoutY="60.0" prefWidth="150.0"/>
+    <Button text="Manage Enrollments" layoutX="580.0" layoutY="60.0" prefWidth="150.0"/>
+    <Button text="Academic Progress" layoutX="750.0" layoutY="60.0" prefWidth="150.0"/>
+    <Button text="Tuition Management" layoutX="920.0" layoutY="60.0" prefWidth="150.0"/>
+
+    <!-- TableView to display Students -->
+    <TableView fx:id="tblStudents" layoutX="20.0" layoutY="120.0" prefHeight="400.0" prefWidth="760.0">
+        <columns>
+            <TableColumn fx:id="colStudentID" text="Student ID" prefWidth="100.0" />
+            <TableColumn fx:id="colName" text="Name" prefWidth="200.0" />
+            <TableColumn fx:id="colProgram" text="Program" prefWidth="150.0" />
+            <TableColumn fx:id="colEnrollmentStatus" text="Enrollment Status" prefWidth="150.0" />
+            <TableColumn fx:id="colTuition" text="Tuition" prefWidth="150.0" />
+        </columns>
+    </TableView>
+
+</AnchorPane>
