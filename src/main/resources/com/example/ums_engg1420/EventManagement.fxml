@@ -10,6 +10,7 @@
             prefHeight="600.0" prefWidth="800.0">
 
     <VBox spacing="10" alignment="TOP_CENTER">
+        <!-- Title -->
         <Label text="Event Management" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
 
         <!-- Calendar View -->
@@ -18,7 +19,7 @@
             <Button text="View Events" fx:id="btnViewCalendar"/>
         </HBox>
 
-        <!-- Search & Filtering Options -->
+        <!-- Search & Filter Options -->
         <HBox spacing="10">
             <TextField fx:id="txtSearch" promptText="Search Events"/>
             <ComboBox fx:id="filterOptions">
@@ -33,39 +34,48 @@
             <Button text="Search" fx:id="btnSearch"/>
         </HBox>
 
-        <!-- List View of Events -->
-        <TableView fx:id="tblEvents">
-            <columns>
-                <TableColumn fx:id="colEventName" text="Event Name" />
-                <TableColumn fx:id="colEventDate" text="Date &amp; Time" />
-                <TableColumn fx:id="colLocation" text="Location" />
-                <TableColumn fx:id="colCapacity" text="Capacity" />
-                <TableColumn fx:id="colCost" text="Cost" />
-            </columns>
-        </TableView>
+        <!-- Main Content Area -->
+        <HBox spacing="20" alignment="TOP_LEFT" VBox.vgrow="ALWAYS">
+            <!-- List View of Events -->
+            <VBox spacing="10" HBox.hgrow="ALWAYS">
+                <TableView fx:id="tblEvents" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colEventName" text="Event Name"/>
+                        <TableColumn fx:id="colEventDate" text="Date"/>
+                        <TableColumn fx:id="colEventTime" text="Time"/>
+                        <TableColumn fx:id="colLocation" text="Location"/>
+                        <TableColumn fx:id="colCapacity" text="Capacity"/>
+                        <TableColumn fx:id="colCost" text="Cost"/>
+                    </columns>
+                </TableView>
 
-        <!-- Event Management Actions -->
-        <HBox spacing="10">
-            <Button text="Add Event" fx:id="btnAddEvent" onAction="#addEvent"/>
-            <Button text="Edit Event" fx:id="btnEditEvent" onAction="#editEvent"/>
-            <Button text="Delete Event" fx:id="btnDeleteEvent" onAction="#deleteEvent"/>
-            <Button text="Manage Registrations" fx:id="btnManageRegistrations" onAction="#manageRegistrations"/>
-        </HBox>
+                <!-- Management Buttons -->
+                <HBox spacing="10">
+                    <Button text="Edit Event" fx:id="btnEditEvent" onAction="#editEvent"/>
+                    <Button text="Delete Event" fx:id="btnDeleteEvent" onAction="#deleteEvent"/>
+                    <Button text="Manage Registrations" fx:id="btnManageRegistrations" onAction="#manageRegistrations"/>
+                </HBox>
+            </VBox>
 
-        <!-- Event Details Input Fields -->
-        <VBox spacing="5">
-            <TextField fx:id="eventNameField" promptText="Event Name"/>
-            <TextField fx:id="eventCodeField" promptText="Event Code"/>
-            <TextField fx:id="locationField" promptText="Location"/>
-            <TextField fx:id="dateTimeField" promptText="Date &amp; Time"/>
-            <TextField fx:id="capacityField" promptText="Capacity"/>
-            <TextField fx:id="costField" promptText="Cost"/>
-            <TextArea fx:id="descriptionField" promptText="Description" prefRowCount="3"/>
-        </VBox>
+            <!-- Event Details Input Fields and Actions -->
+            <VBox spacing="10" prefWidth="300">
+                <TextField fx:id="eventNameField" promptText="Event Name"/>
+                <TextField fx:id="eventCodeField" promptText="Event Code"/>
+                <TextField fx:id="locationField" promptText="Location"/>
 
-        <HBox spacing="10">
-            <Button text="Save" fx:id="btnSaveEvent" onAction="#saveEvent"/>
-            <Button text="Cancel" fx:id="btnCancel" onAction="#cancelEvent"/>
+                <!-- Separate Date and Time Fields -->
+                <DatePicker fx:id="eventDateField" promptText="Select Date"/>
+                <TextField fx:id="eventTimeField" promptText="Enter Time (e.g., HH:mm)"/>
+
+                <TextField fx:id="capacityField" promptText="Capacity"/>
+                <TextField fx:id="costField" promptText="Cost"/>
+                <TextArea fx:id="descriptionField" promptText="Description" prefRowCount="3"/>
+
+                <!-- Add Event Button -->
+                <HBox spacing="10">
+                    <Button text="Add Event" fx:id="btnSaveEvent" onAction="#saveEvent"/>
+                </HBox>
+            </VBox>
         </HBox>
     </VBox>
 </AnchorPane>

@@ -28,7 +28,7 @@ public class UserDashboardController {
         btnMyCourses.setOnAction(e -> loadPage("UserCourseManagement.fxml"));
         btnSubjects.setOnAction(e -> loadPage("UserSubjects.fxml"));
         btnFaculty.setOnAction(e -> loadPage("Faculty.fxml"));
-        btnEvents.setOnAction(e -> loadPage("Events.fxml"));
+        btnEvents.setOnAction(e -> loadPage("StudentEventManagement.fxml"));
         btnLogout.setOnAction(e -> logout());
     }
 

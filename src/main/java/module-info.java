@@ -6,6 +6,7 @@ module com.example.ums_engg1420 {
     requires org.kordamp.bootstrapfx.core;
     requires org.apache.poi.poi;
     requires java.sql;
+    opens com.example.ums_engg1420.studentsmodule to javafx.fxml; // Add this line
 
     opens com.example.ums_engg1420 to javafx.fxml;
     exports com.example.ums_engg1420;
