@@ -43,6 +43,9 @@ public class AdminFacultyController {
 
         // Load faculty data from Excel when the application starts
         loadFacultyFromExcel();
+
+        // Load subjects from the UMS_Data.xlsx file and print them to console
+        loadSubjectsFromExcel();
     }
 
     @FXML
@@ -159,6 +162,32 @@ public class AdminFacultyController {
             }
         }
     }
+
+    // Load subjects from UMS_Data.xlsx and print them to console
+    private void loadSubjectsFromExcel() {
+        System.out.println("Loading subjects from UMS_Data.xlsx...");
+        File file = new File("src/main/resources/com/example/ums_engg1420/UMS_Data.xlsx");
+        if (file.exists()) {
+            try (FileInputStream fileIn = new FileInputStream(file); Workbook workbook = WorkbookFactory.create(fileIn)) {
+                Sheet sheet = workbook.getSheetAt(0); // Assuming subject data is in the first sheet
+
+                // Print the subjects to console
+                for (Row row : sheet) {
+                    if (row.getRowNum() == 0) continue;  // Skip the header row
+
+                    // Read the subject code and subject name from respective columns
+                    String subjectCode = row.getCell(0).getStringCellValue();
+                    String subjectName = row.getCell(1).getStringCellValue();
+
+                    // Print the subject code and name to the console
+                    System.out.println("Subject Code: " + subjectCode + ", Subject Name: " + subjectName);
+                }
+            } catch (IOException e) {
+                showAlert("Error", "Failed to load subject data from UMS_Data.xlsx.");
+            }
+        }
+    }
+
 
     // Faculty class to hold faculty details
     public static class Faculty {
