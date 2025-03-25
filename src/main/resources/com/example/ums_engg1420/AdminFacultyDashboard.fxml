@@ -7,11 +7,11 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.ums_engg1420.facultymodule.AdminFacultyController">
 
-    <HBox spacing="20" prefWidth="800" prefHeight="400" alignment="CENTER_LEFT">
+    <HBox spacing="20" prefWidth="900" prefHeight="500" alignment="CENTER_LEFT">
         <!-- Left Side: Faculty List -->
         <VBox spacing="10">
             <Label text="Faculty List" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
-            <TableView fx:id="facultyTable" prefWidth="400" prefHeight="300">
+            <TableView fx:id="facultyTable" prefWidth="500" prefHeight="350">
                 <columns>
                     <TableColumn text="Name" fx:id="colName"/>
                     <TableColumn text="Degree" fx:id="colDegree"/>
@@ -24,16 +24,19 @@
 
             <!-- New Table for Subject and Subject Code -->
             <Label text="Assigned Subjects" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
-            <TableView fx:id="subjectTable" prefWidth="400" prefHeight="150">
+            <TableView fx:id="subjectTable" prefWidth="500" prefHeight="350">
                 <columns>
                     <TableColumn text="Subject" fx:id="colSubject"/>
                     <TableColumn text="Subject Code" fx:id="colSubjectCode"/>
                 </columns>
             </TableView>
+
+            <!-- Assignment Section (Always Visible) -->
+            <Button fx:id="submitAssignButton" text="Assign Subject to Faculty" onAction="#handleAssignFaculty"/>
         </VBox>
 
         <!-- Right Side: Form Inputs -->
-        <VBox spacing="10" prefWidth="300">
+        <VBox spacing="10" prefWidth="350">
             <Label text="Add Faculty" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
 
             <Label text="Name:" />

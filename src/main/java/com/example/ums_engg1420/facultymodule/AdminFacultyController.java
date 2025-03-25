@@ -2,6 +2,7 @@ package com.example.ums_engg1420.facultymodule;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import org.apache.poi.ss.usermodel.*;
@@ -202,6 +203,79 @@ public class AdminFacultyController {
         }
     }
 
+    @FXML
+    public void handleAssignFaculty(ActionEvent actionEvent) {
+        // Get selected subject from subjectTable
+        Subject selectedSubject = subjectTable.getSelectionModel().getSelectedItem();
+        if (selectedSubject == null) {
+            showAlert("Error", "Please select a subject.");
+            return;
+        }
+
+        // Prompt user to enter faculty member name
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Assign Faculty");
+        dialog.setHeaderText("Enter Faculty Member Name:");
+        dialog.setContentText("Faculty Name:");
+        dialog.showAndWait().ifPresent(facultyName -> {
+            // Find the faculty member by name (case insensitive)
+            Faculty assignedFaculty = null;
+            for (Faculty faculty : facultyDatabase.values()) {
+                if (faculty.getName().equalsIgnoreCase(facultyName)) {
+                    assignedFaculty = faculty;
+                    break;
+                }
+            }
+
+            if (assignedFaculty == null) {
+                showAlert("Error", "Faculty member not found.");
+                return;
+            }
+
+            // Proceed to assign the faculty member to the selected subject
+            try {
+                File file = new File("facultysubjects.xlsx");
+                Workbook workbook;
+                Sheet sheet;
+
+                if (file.exists()) {
+                    // If file exists, load it
+                    try (FileInputStream fileIn = new FileInputStream(file); Workbook existingWorkbook = WorkbookFactory.create(fileIn)) {
+                        workbook = existingWorkbook;
+                        sheet = workbook.getSheetAt(0);
+                    }
+                } else {
+                    // If file doesn't exist, create a new one
+                    workbook = new XSSFWorkbook();
+                    sheet = workbook.createSheet("Faculty Assignments");
+
+                    // Create header row
+                    Row headerRow = sheet.createRow(0);
+                    headerRow.createCell(0).setCellValue("Subject Code");
+                    headerRow.createCell(1).setCellValue("Subject Name");
+                    headerRow.createCell(2).setCellValue("Faculty Name");
+                    headerRow.createCell(3).setCellValue("Faculty Email");
+                }
+
+                // Add assignment to the sheet
+                int rowNum = sheet.getLastRowNum() + 1;
+                Row row = sheet.createRow(rowNum);
+                row.createCell(0).setCellValue(selectedSubject.getSubjectCode());
+                row.createCell(1).setCellValue(selectedSubject.getSubjectName());
+                row.createCell(2).setCellValue(assignedFaculty.getName());
+                row.createCell(3).setCellValue(assignedFaculty.getEmail());
+
+                // Save the updated workbook to file
+                try (FileOutputStream fileOut = new FileOutputStream(file)) {
+                    workbook.write(fileOut);
+                }
+
+                showAlert("Success", "Faculty member assigned to subject successfully.");
+            } catch (IOException e) {
+                showAlert("Error", "Failed to assign faculty member to subject.");
+            }
+        });
+    }
     // Faculty class to hold faculty details
     public static class Faculty {
         private String name;
@@ -210,7 +284,7 @@ public class AdminFacultyController {
         private String office;
         private String researchInterest;
 
-        public Faculty(String name, String degree, String email, String office, String researchInterest) {
+        public Faculty(String name, String degree,   String email, String office, String researchInterest) {
             this.name = name;
             this.degree = degree;
             this.email = email;
