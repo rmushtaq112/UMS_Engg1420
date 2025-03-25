@@ -28,7 +28,7 @@ public class AdminDashboardController {
         btnDashboard.setOnAction(e -> loadPage("Dashboard.fxml"));
         btnStudentManagement.setOnAction(e -> loadPage("AdminStudentManagement.fxml"));
         btnCourseManagement.setOnAction(e -> loadPage("CourseManagement.fxml"));
-        btnFacultyManagement.setOnAction(e -> loadPage("FacultyManagement.fxml"));
+        btnFacultyManagement.setOnAction(e -> loadPage("AdminFacultyDashboard.fxml"));
         btnEventManagement.setOnAction(e -> loadPage("EventManagement.fxml"));
         btnSubjectManagement.setOnAction(e -> loadPage("SubjectManagement.fxml"));
 

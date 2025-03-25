@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.ums_engg1420.facultymodule.AdminFacultyController">
+
+    <HBox spacing="20" prefWidth="800" prefHeight="400" alignment="CENTER_LEFT">
+        <!-- Left Side: Faculty List -->
+        <VBox spacing="10">
+            <Label text="Faculty List" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+            <TableView fx:id="facultyTable" prefWidth="400" prefHeight="300">
+                <columns>
+                    <TableColumn text="Name" fx:id="colName"/>
+                    <TableColumn text="Degree" fx:id="colDegree"/>
+                    <TableColumn text="Email" fx:id="colEmail"/>
+                    <TableColumn text="Office" fx:id="colOffice"/>
+                    <TableColumn text="Research Interest" fx:id="colResearch"/>
+                </columns>
+            </TableView>
+        </VBox>
+
+        <!-- Right Side: Form Inputs -->
+        <VBox spacing="10" prefWidth="300">
+            <Label text="Add Faculty" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+
+            <Label text="Name:" />
+            <TextField fx:id="nameField"/>
+
+            <Label text="Degree:" />
+            <TextField fx:id="degreeField"/>
+
+            <Label text="Email:" />
+            <TextField fx:id="emailField"/>
+
+            <Label text="Office:" />
+            <TextField fx:id="officeField"/>
+
+            <Label text="Research Interest:" />
+            <TextField fx:id="researchField"/>
+
+            <Button text="Add Faculty" onAction="#handleAddFaculty"/>
+        </VBox>
+    </HBox>
+</AnchorPane>
