@@ -16,17 +16,23 @@ import java.util.Map;
 
 public class AdminFacultyController {
 
+    // Faculty fields
     @FXML private TextField nameField, degreeField, emailField, officeField, researchField;
     @FXML private TableView<Faculty> facultyTable;
     @FXML private TableColumn<Faculty, String> colName, colDegree, colEmail, colOffice, colResearch;
     @FXML private Button deleteButton;
 
+    // Subject fields
+    @FXML private TableView<Subject> subjectTable;
+    @FXML private TableColumn<Subject, String> colSubject, colSubjectCode;
+
     private Map<String, Faculty> facultyDatabase = new HashMap<>();
     private ObservableList<Faculty> facultyList = FXCollections.observableArrayList();
+    private ObservableList<Subject> subjectList = FXCollections.observableArrayList(); // ObservableList for subjects
 
     @FXML
     public void initialize() {
-        // Set up table columns
+        // Set up faculty table columns
         colName.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getName()));
         colDegree.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getDegree()));
         colEmail.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getEmail()));
@@ -44,7 +50,13 @@ public class AdminFacultyController {
         // Load faculty data from Excel when the application starts
         loadFacultyFromExcel();
 
-        // Load subjects from the UMS_Data.xlsx file and print them to console
+        // Set up subject table columns
+        colSubject.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getSubjectName()));
+        colSubjectCode.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getSubjectCode()));
+
+        subjectTable.setItems(subjectList); // Bind subject list to subject table
+
+        // Load subjects from the UMS_Data.xlsx file
         loadSubjectsFromExcel();
     }
 
@@ -163,31 +175,32 @@ public class AdminFacultyController {
         }
     }
 
-    // Load subjects from UMS_Data.xlsx and print them to console
+    // Load subjects from UMS_Data.xlsx and populate subjectTable
     private void loadSubjectsFromExcel() {
-        System.out.println("Loading subjects from UMS_Data.xlsx...");
         File file = new File("src/main/resources/com/example/ums_engg1420/UMS_Data.xlsx");
         if (file.exists()) {
             try (FileInputStream fileIn = new FileInputStream(file); Workbook workbook = WorkbookFactory.create(fileIn)) {
                 Sheet sheet = workbook.getSheetAt(0); // Assuming subject data is in the first sheet
 
-                // Print the subjects to console
+                // Read each row and add subjects to the subjectList
                 for (Row row : sheet) {
                     if (row.getRowNum() == 0) continue;  // Skip the header row
 
-                    // Read the subject code and subject name from respective columns
                     String subjectCode = row.getCell(0).getStringCellValue();
                     String subjectName = row.getCell(1).getStringCellValue();
 
-                    // Print the subject code and name to the console
-                    System.out.println("Subject Code: " + subjectCode + ", Subject Name: " + subjectName);
+                    // Add subject to the subjectList
+                    Subject subject = new Subject(subjectName, subjectCode);
+                    subjectList.add(subject);
                 }
+
+                subjectTable.refresh();  // Refresh subject table to display data
+
             } catch (IOException e) {
                 showAlert("Error", "Failed to load subject data from UMS_Data.xlsx.");
             }
         }
     }
-
 
     // Faculty class to hold faculty details
     public static class Faculty {
@@ -210,5 +223,19 @@ public class AdminFacultyController {
         public String getEmail() { return email; }
         public String getOffice() { return office; }
         public String getResearchInterest() { return researchInterest; }
+    }
+
+    // Subject class to hold subject details
+    public static class Subject {
+        private String subjectName;
+        private String subjectCode;
+
+        public Subject(String subjectName, String subjectCode) {
+            this.subjectName = subjectName;
+            this.subjectCode = subjectCode;
+        }
+
+        public String getSubjectName() { return subjectName; }
+        public String getSubjectCode() { return subjectCode; }
     }
 }
