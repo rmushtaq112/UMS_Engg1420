@@ -4,8 +4,8 @@ module com.example.ums_engg1420 {
 
     requires org.controlsfx.controls;
     requires org.kordamp.bootstrapfx.core;
-    requires org.apache.poi.poi;
     requires java.sql;
+    requires org.apache.poi.ooxml;
     opens com.example.ums_engg1420.studentsmodule to javafx.fxml; // Add this line
     opens com.example.ums_engg1420.facultymodule to javafx.fxml;
 

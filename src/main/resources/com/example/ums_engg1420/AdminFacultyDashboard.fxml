@@ -20,6 +20,7 @@
                     <TableColumn text="Research Interest" fx:id="colResearch"/>
                 </columns>
             </TableView>
+            <Button text="Delete Faculty" fx:id="deleteButton" onAction="#handleDeleteFaculty" disable="true" />
         </VBox>
 
         <!-- Right Side: Form Inputs -->
