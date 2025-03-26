@@ -16,6 +16,7 @@ public class UserDashboardController {
     @FXML private Button btnDashboard;
     @FXML private Button btnMyCourses;
     @FXML private Button btnSubjects;
+    @FXML private Button btnFacultyLogin;  // Added Faculty Login button
     @FXML private Button btnFaculty;
     @FXML private Button btnEvents;
     @FXML private Button btnLogout;
@@ -27,7 +28,8 @@ public class UserDashboardController {
         btnDashboard.setOnAction(e -> loadPage("UserDashboardContent.fxml"));
         btnMyCourses.setOnAction(e -> loadPage("UserCourseManagement.fxml"));
         btnSubjects.setOnAction(e -> loadPage("UserSubjects.fxml"));
-        btnFaculty.setOnAction(e -> loadPage("Faculty.fxml"));
+        btnFacultyLogin.setOnAction(e -> loadPage("FacultyDashboard.fxml")); // Action for Faculty Login
+        btnFaculty.setOnAction(e -> loadPage("FacultyDashboard.fxml"));
         btnEvents.setOnAction(e -> loadPage("StudentEventManagement.fxml"));
         btnLogout.setOnAction(e -> logout());
     }
@@ -38,7 +40,7 @@ public class UserDashboardController {
             Parent newPage = loader.load();
             mainContent.getChildren().setAll(newPage);
         } catch (IOException e) {
-            e.printStackTrace();  // Print error if FXML is not found
+            e.printStackTrace();
             System.out.println("ERROR: Could not load " + fxmlFile);
         }
     }

@@ -21,7 +21,7 @@
             <Button fx:id="btnSubjects" style="-fx-background-color: #3498DB; -fx-text-fill: white;" text="Subjects" />
             <Button fx:id="btnFaculty" style="-fx-background-color: #3498DB; -fx-text-fill: white;" text="Faculty" />
             <Button fx:id="btnEvents" style="-fx-background-color: #3498DB; -fx-text-fill: white;" text="Events" />
-            <Button fx:id="btnStudentManagement" style="-fx-background-color: #27AE60; -fx-text-fill: white;" text="Student Management" />
+            <Button fx:id="btnFacultyLogin" style="-fx-background-color: #27AE60; -fx-text-fill: white;" text="Faculty Login" />
             <Button fx:id="btnLogout" style="-fx-background-color: #E74C3C; -fx-text-fill: white;" text="Logout" />
         </VBox>
     </left>
