@@ -8,18 +8,19 @@
             fx:controller="com.example.ums_engg1420.facultymodule.FacultyController"
             prefHeight="400.0" prefWidth="600.0">
 
-    <VBox fx:id="loginBox" alignment="CENTER" spacing="20" layoutX="150" layoutY="80">
+    <VBox fx:id="loginBox" alignment="CENTER" spacing="20" AnchorPane.topAnchor="100" AnchorPane.leftAnchor="100"
+          prefWidth="400">
         <Label text="Faculty Login" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
 
-        <Label text="Enter Email:" />
-        <TextField fx:id="emailField" promptText="Enter your email" />
+        <Label fx:id="emailLabel" text="Enter Email:" />
+        <TextField fx:id="email" promptText="Enter your email" />
 
         <Label text="Enter Password:" />
         <PasswordField fx:id="passwordField" promptText="Enter password" />
 
         <Button text="Login" onAction="#handleFacultyLogin" />
 
-        <Label fx:id="errorLabel" textFill="red" visible="false"/>
+        <Label fx:id="errorLabel" textFill="red" opacity="0"/>
     </VBox>
 
 </AnchorPane>
