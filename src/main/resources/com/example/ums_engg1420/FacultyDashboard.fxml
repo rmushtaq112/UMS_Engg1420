@@ -8,6 +8,7 @@
             fx:controller="com.example.ums_engg1420.facultymodule.FacultyController"
             prefHeight="400.0" prefWidth="600.0">
 
+    <!-- VBox for login content -->
     <VBox fx:id="loginBox" alignment="CENTER" spacing="20" AnchorPane.topAnchor="100" AnchorPane.leftAnchor="100"
           prefWidth="400">
         <Label text="Faculty Login" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
@@ -22,5 +23,8 @@
 
         <Label fx:id="errorLabel" textFill="red" opacity="0"/>
     </VBox>
+
+    <!-- Add the welcomeLabel and position it at the top-right of the AnchorPane -->
+    <Label fx:id="welcomeLabel" text="" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: green;" visible="false" AnchorPane.topAnchor="10" AnchorPane.rightAnchor="10"/>
 
 </AnchorPane>

@@ -67,11 +67,31 @@ public class FacultyController {
         if ("faculty".equals(password)) {
             System.out.println("Login successful for email: " + facultyEmail); // Console log on successful login
             loginBox.setVisible(false);
-            loadFacultyDashboard();
+            showWelcomeMessage();
         } else {
             errorLabel.setText("Incorrect password. Try again.");
             errorLabel.setVisible(true);
         }
+    }
+
+    private void showWelcomeMessage() {
+        // Show the welcome message in the center of the screen
+        welcomeLabel.setText("Welcome, " + facultyEmail + "!");
+        welcomeLabel.setVisible(true);
+
+        // Center the welcome label in the scene
+        Stage stage = (Stage) loginBox.getScene().getWindow();
+        stage.setTitle("Faculty Login");
+
+        // Optionally, delay the transition to the dashboard to show the welcome label for a few seconds
+        new Thread(() -> {
+            try {
+                Thread.sleep(2000); // Show welcome message for 2 seconds
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            loadFacultyDashboard(); // Then load the faculty dashboard
+        }).start();
     }
 
     private void loadFacultyDashboard() {
@@ -79,6 +99,7 @@ public class FacultyController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("FacultyDashboard.fxml"));
             Parent root = loader.load();
 
+            // Optional: Set the welcome message if it was not already set
             if (welcomeLabel != null) {
                 welcomeLabel.setText("Welcome, " + facultyEmail + "!");
             }
