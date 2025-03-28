@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.ums_engg1420.facultymodule.FacultyController"
-            prefHeight="400.0" prefWidth="600.0">
+            prefHeight="500.0" prefWidth="600.0">
 
     <!-- VBox for login content -->
     <VBox fx:id="loginBox" alignment="CENTER" spacing="20" AnchorPane.topAnchor="100" AnchorPane.leftAnchor="100"
@@ -21,10 +22,20 @@
 
         <Button text="Login" onAction="#handleFacultyLogin" />
 
-        <Label fx:id="errorLabel" textFill="red" opacity="0"/>
+        <Label fx:id="errorLabel" textFill="red" visible="false"/>
     </VBox>
 
-    <!-- Add the welcomeLabel and position it at the top-right of the AnchorPane -->
-    <Label fx:id="welcomeLabel" text="XXX" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: green;" visible="false" AnchorPane.topAnchor="10" AnchorPane.rightAnchor="10"/>
+    <!-- Welcome Section -->
+    <VBox alignment="CENTER" spacing="10" prefWidth="400"
+          AnchorPane.topAnchor="100" AnchorPane.leftAnchor="160">
+        <Label fx:id="welcomeLabel" text="Welcome" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: green;" visible="false"/>
+
+        <ImageView fx:id="profileImageView" fitWidth="100" fitHeight="100" visible="false"/>
+
+        <Label fx:id="degreeLabel" text="Degree: " visible="false"/>
+        <Label fx:id="facultyEmailLabel" text="Email: " visible="false"/>
+        <Label fx:id="officeLabel" text="Office: " visible="false"/>
+        <Label fx:id="researchInterestLabel" text="Research Interest: " visible="false"/>
+    </VBox>
 
 </AnchorPane>
