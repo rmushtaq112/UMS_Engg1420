@@ -13,8 +13,8 @@
           prefWidth="400">
         <Label text="Faculty Login" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
 
-        <Label fx:id="emailLabel" text="Enter Email:" />
-        <TextField fx:id="email" promptText="Enter your email" />
+        <Label text="Enter Email:" />
+        <TextField fx:id="emailField" promptText="Enter your email" />
 
         <Label text="Enter Password:" />
         <PasswordField fx:id="passwordField" promptText="Enter password" />
@@ -25,6 +25,6 @@
     </VBox>
 
     <!-- Add the welcomeLabel and position it at the top-right of the AnchorPane -->
-    <Label fx:id="welcomeLabel" text="" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: green;" visible="false" AnchorPane.topAnchor="10" AnchorPane.rightAnchor="10"/>
+    <Label fx:id="welcomeLabel" text="XXX" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: green;" visible="false" AnchorPane.topAnchor="10" AnchorPane.rightAnchor="10"/>
 
 </AnchorPane>
