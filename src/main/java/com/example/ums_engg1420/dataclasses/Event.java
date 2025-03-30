@@ -1,39 +1,102 @@
 package com.example.ums_engg1420.dataclasses;
 
+import java.util.List;
+
 public class Event {
-    private int eventId;
-    private String eventName;
+
     private String eventCode;
+    private String eventName;
     private String description;
-    private String headerImage;
     private String location;
     private String dateTime;
     private int capacity;
-    private double cost;
-    private String registeredStudents;
+    private String cost;
+    private String headerImage;
+    private List<String> registeredStudents;
 
-    public Event(int eventId, String eventName, String eventCode, String description, String headerImage,
-                 String location, String dateTime, int capacity, double cost, String registeredStudents) {
-        this.eventId = eventId;
-        this.eventName = eventName;
+    public Event(String eventCode, String eventName, String description, String location,
+                 String dateTime, int capacity, String cost, String headerImage, List<String> registeredStudents) {
         this.eventCode = eventCode;
+        this.eventName = eventName;
         this.description = description;
-        this.headerImage = headerImage;
         this.location = location;
         this.dateTime = dateTime;
         this.capacity = capacity;
         this.cost = cost;
+        this.headerImage = headerImage;
         this.registeredStudents = registeredStudents;
     }
 
-    public int getEventId() { return eventId; }
-    public String getEventName() { return eventName; }
-    public String getEventCode() { return eventCode; }
-    public String getDescription() { return description; }
-    public String getHeaderImage() { return headerImage; }
-    public String getLocation() { return location; }
-    public String getDateTime() { return dateTime; }
-    public int getCapacity() { return capacity; }
-    public double getCost() { return cost; }
-    public String getRegisteredStudents() { return registeredStudents; }
+    // Getters and setters
+    public String getEventCode() {
+        return eventCode;
+    }
+
+    public void setEventCode(String eventCode) {
+        this.eventCode = eventCode;
+    }
+
+    public String getEventName() {
+        return eventName;
+    }
+
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public String getCost() {
+        return cost;
+    }
+
+    public void setCost(String cost) {
+        this.cost = cost;
+    }
+
+    public String getHeaderImage() {
+        return headerImage;
+    }
+
+    public void setHeaderImage(String headerImage) {
+        this.headerImage = headerImage;
+    }
+
+    public List<String> getRegisteredStudents() {
+        return registeredStudents;
+    }
+
+    public void setRegisteredStudents(List<String> registeredStudents) {
+        this.registeredStudents = registeredStudents;
+    }
 }
