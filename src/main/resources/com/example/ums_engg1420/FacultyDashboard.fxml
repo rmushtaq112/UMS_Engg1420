@@ -3,6 +3,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
@@ -10,7 +12,7 @@
             prefHeight="500.0" prefWidth="600.0">
 
     <!-- VBox for login content -->
-    <VBox fx:id="loginBox" alignment="CENTER" spacing="20" AnchorPane.topAnchor="100" AnchorPane.leftAnchor="100"
+    <VBox fx:id="loginBox" alignment="CENTER" spacing="20" AnchorPane.topAnchor="40" AnchorPane.leftAnchor="100"
           prefWidth="400">
         <Label text="Faculty Login" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
 
@@ -27,7 +29,7 @@
 
     <!-- Welcome Section -->
     <VBox alignment="CENTER" spacing="10" prefWidth="400"
-          AnchorPane.topAnchor="100" AnchorPane.leftAnchor="160">
+          AnchorPane.topAnchor="40" AnchorPane.leftAnchor="160">
         <Label fx:id="welcomeLabel" text="Welcome" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: green;" visible="false"/>
 
         <ImageView fx:id="profileImageView" fitWidth="100" fitHeight="100" visible="false"/>
@@ -36,6 +38,16 @@
         <Label fx:id="facultyEmailLabel" text="Email: " visible="false"/>
         <Label fx:id="officeLabel" text="Office: " visible="false"/>
         <Label fx:id="researchInterestLabel" text="Research Interest: " visible="false"/>
+    </VBox>
+
+    <!-- Table for Subject Taught -->
+    <VBox alignment="CENTER" spacing="20" prefWidth="400"
+          AnchorPane.topAnchor="300" AnchorPane.leftAnchor="160" visible="false" fx:id="facultyTableBox">
+        <TableView fx:id="facultyTable" prefWidth="400" prefHeight="200" visible="false">
+            <columns>
+                <TableColumn fx:id="subjectColumn" text="Subject Taught" prefWidth="400"/>
+            </columns>
+        </TableView>
     </VBox>
 
 </AnchorPane>

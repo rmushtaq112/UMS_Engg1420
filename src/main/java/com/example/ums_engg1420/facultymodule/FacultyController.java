@@ -1,11 +1,10 @@
 package com.example.ums_engg1420.facultymodule;
 
 import javafx.animation.PauseTransition;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
@@ -34,6 +33,10 @@ public class FacultyController {
     @FXML private Label officeLabel;
     @FXML private Label researchInterestLabel;
 
+    @FXML private VBox facultyTableBox;
+    @FXML private TableView<String> facultyTable;
+    @FXML private TableColumn<String, String> subjectColumn;
+
     private String facultyName;
     private String facultyEmail;
     private String facultyDegree;
@@ -42,8 +45,7 @@ public class FacultyController {
 
     @FXML
     private void handleFacultyLogin() {
-        System.out.println("Login button clicked!"); // Debugging
-
+        System.out.println("Login button clicked!");
         String email = emailField.getText().trim();
         String password = passwordField.getText();
 
@@ -76,13 +78,13 @@ public class FacultyController {
 
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
-                Cell emailCell = row.getCell(2); // Email column index 2
+                org.apache.poi.ss.usermodel.Cell emailCell = row.getCell(2);
                 if (emailCell != null && emailCell.getStringCellValue().equalsIgnoreCase(email)) {
-                    facultyName = row.getCell(0).getStringCellValue(); // Name column index 0
-                    facultyDegree = row.getCell(1).getStringCellValue(); // Degree column index 1
+                    facultyName = row.getCell(0).getStringCellValue();
+                    facultyDegree = row.getCell(1).getStringCellValue();
                     facultyEmail = email;
-                    facultyOffice = row.getCell(3).getStringCellValue(); // Office column index 3
-                    facultyResearchInterest = row.getCell(4).getStringCellValue(); // Research Interest column index 4
+                    facultyOffice = row.getCell(3).getStringCellValue();
+                    facultyResearchInterest = row.getCell(4).getStringCellValue();
                     return true;
                 }
             }
@@ -95,7 +97,6 @@ public class FacultyController {
     private void showWelcomeMessage() {
         welcomeLabel.setText("Welcome, " + facultyName + "!");
         welcomeLabel.setVisible(true);
-
         loadProfileImage();
 
         degreeLabel.setText("Degree: " + facultyDegree);
@@ -108,13 +109,15 @@ public class FacultyController {
         officeLabel.setVisible(true);
         researchInterestLabel.setVisible(true);
 
+        // Configure subjectColumn to display subjects
+        subjectColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue()));
+
+        loadFacultySubjects();
+        facultyTableBox.setVisible(true);
+        facultyTable.setVisible(true);
+
         Stage stage = (Stage) loginBox.getScene().getWindow();
         stage.setTitle("Faculty Dashboard");
-
-        // Pause for 2 seconds before loading dashboard
-        PauseTransition delay = new PauseTransition(Duration.seconds(2));
-        delay.setOnFinished(event -> loadFacultyDashboard());
-        delay.play();
     }
 
     private void loadProfileImage() {
@@ -127,9 +130,31 @@ public class FacultyController {
         profileImageView.setVisible(true);
     }
 
-    private void loadFacultyDashboard() {
-        System.out.println("Navigating to Faculty Dashboard...");
-        // Add logic to load the Faculty Dashboard scene if needed
+    private void loadFacultySubjects() {
+        String filePath = "facultysubjects.xlsx";
+        ObservableList<String> subjects = FXCollections.observableArrayList();
+
+        try (FileInputStream fis = new FileInputStream(new File(filePath));
+             Workbook workbook = new XSSFWorkbook(fis)) {
+
+            Sheet sheet = workbook.getSheetAt(0);
+            Iterator<Row> rowIterator = sheet.iterator();
+            rowIterator.next(); // Skip header row
+
+            while (rowIterator.hasNext()) {
+                Row row = rowIterator.next();
+                org.apache.poi.ss.usermodel.Cell facultyNameCell = row.getCell(2);
+                org.apache.poi.ss.usermodel.Cell subjectCell = row.getCell(1);
+
+                if (facultyNameCell != null && subjectCell != null &&
+                        facultyNameCell.getStringCellValue().equalsIgnoreCase(facultyName)) {
+                    subjects.add(subjectCell.getStringCellValue());
+                }
+            }
+            facultyTable.setItems(subjects);
+        } catch (IOException e) {
+            showError("Error reading faculty subjects.");
+        }
     }
 
     private void showError(String message) {
