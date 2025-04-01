@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.apache.poi.ss.usermodel.*;
@@ -36,6 +37,8 @@ public class FacultyController {
     @FXML private VBox facultyTableBox;
     @FXML private TableView<String> facultyTable;
     @FXML private TableColumn<String, String> subjectColumn;
+
+    @FXML private Button uploadButton;  // Reference to the "Upload Profile Picture" button
 
     private String facultyName;
     private String facultyEmail;
@@ -116,6 +119,9 @@ public class FacultyController {
         facultyTableBox.setVisible(true);
         facultyTable.setVisible(true);
 
+        // Make the "Upload Profile Picture" button visible
+        uploadButton.setVisible(true);
+
         Stage stage = (Stage) loginBox.getScene().getWindow();
         stage.setTitle("Faculty Dashboard");
     }
@@ -160,5 +166,30 @@ public class FacultyController {
     private void showError(String message) {
         errorLabel.setText(message);
         errorLabel.setVisible(true);
+    }
+
+    @FXML
+    private void handleUploadProfilePicture() {
+        // Create a FileChooser instance
+        FileChooser fileChooser = new FileChooser();
+
+        // Set the extension filter for image files
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        // Show the file chooser dialog
+        Stage stage = (Stage) loginBox.getScene().getWindow();
+        File selectedFile = fileChooser.showOpenDialog(stage);
+
+        // If a file is selected, update the profile image view
+        if (selectedFile != null) {
+            try {
+                // Load and display the selected image
+                Image image = new Image(selectedFile.toURI().toString());
+                profileImageView.setImage(image);
+            } catch (Exception e) {
+                showError("Error loading the image.");
+            }
+        }
     }
 }
