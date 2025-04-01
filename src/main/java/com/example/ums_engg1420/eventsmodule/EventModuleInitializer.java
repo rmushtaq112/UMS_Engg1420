@@ -15,9 +15,16 @@ import static com.example.ums_engg1420.dataparsers.EventDataHandler.readEvents;
 
 public class EventModuleInitializer {
 
-    // Read initial data from the event data handler
-    protected List<Event> eventData = readEvents();
-    protected ObservableList<Event> events = FXCollections.observableArrayList(eventData);
+    protected ObservableList<Event> events = FXCollections.observableArrayList();
+
+    public EventModuleInitializer() {
+        refreshList();
+    }
+
+    protected void refreshList() {
+        List<Event> eventData = readEvents();
+        events.setAll(eventData);
+    }
 
     // Method to initialize event table columns
     public void tableInitialize(
@@ -30,7 +37,7 @@ public class EventModuleInitializer {
             TableColumn<Event, String> costCol,
             TableColumn<Event, String> headerCol,
             TableColumn<Event, String> registeredByCol,
-            TableColumn<Event, Integer> numRegisteredCol // New column for registered count
+            TableColumn<Event, Integer> numRegisteredCol
     ) {
         codeCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEventCode()));
         nameCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEventName()));
@@ -41,14 +48,12 @@ public class EventModuleInitializer {
         costCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCost()));
         headerCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getHeaderImage()));
 
-        // Registered students list
         if (registeredByCol != null) {
             registeredByCol.setCellValueFactory(cellData -> new SimpleStringProperty(
                     String.join(", ", cellData.getValue().getRegisteredStudents())
             ));
         }
 
-        // Number of registered students
         if (numRegisteredCol != null) {
             numRegisteredCol.setCellValueFactory(cellData ->
                     new SimpleIntegerProperty(cellData.getValue().getRegisteredStudents().size()).asObject()
@@ -58,10 +63,9 @@ public class EventModuleInitializer {
 
     // Method to refresh event entries and update the table
     public void refreshEntries(TableView<Event> table) {
-        eventData = readEvents();  // Read updated event data
-        events = FXCollections.observableArrayList(eventData);
+        refreshList();
         table.setItems(events);
-        table.refresh();  // Force refresh
+        table.refresh();
     }
 
     // Show alert
@@ -73,3 +77,4 @@ public class EventModuleInitializer {
         alert.showAndWait();
     }
 }
+
