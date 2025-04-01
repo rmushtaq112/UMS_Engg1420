@@ -38,11 +38,11 @@
       <HBox alignment="CENTER" prefWidth="729.0">
          <children>
             <AnchorPane style="-fx-border-color: black; -fx-border-radius: 20; -fx-border-width: 0;">
-            
+
                       <VBox alignment="TOP_CENTER" prefWidth="581.0" spacing="10" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                   <VBox>
                      <children>
-                  
+
                                 <HBox prefWidth="450.0" spacing="10">
                               <TextField fx:id="txtSearch" promptText="Search Subjects" />
                               <Button fx:id="btnSearch" text="Search" />
@@ -55,7 +55,7 @@
                         <Insets left="10.0" right="10.0" />
                      </VBox.margin>
                   </VBox>
-            
+
                           <TableView fx:id="tblSubjects">
                         <TableColumn fx:id="colCourseName" text="Course Name" />
                         <TableColumn fx:id="colCourseCode" text="Course Code" />
@@ -81,7 +81,7 @@
                         <TableColumn prefWidth="65.0" text="Exam Time" />
                      </columns>
                     </TableView>
-            
+
                           <HBox spacing="10">
                         <Button fx:id="btnEditSubject" text="Edit" />
                         <Button fx:id="btnDeleteSubject" text="Delete" />
