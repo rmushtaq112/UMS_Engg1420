@@ -13,6 +13,7 @@ public class Event {
     private String cost;
     private String headerImage;
     private List<String> registeredStudents;
+    private List<String> registeredEmails;
 
     public Event(String eventCode, String eventName, String description, String location,
                  String dateTime, int capacity, String cost, String headerImage, List<String> registeredStudents) {
@@ -25,6 +26,7 @@ public class Event {
         this.cost = cost;
         this.headerImage = headerImage;
         this.registeredStudents = registeredStudents;
+        this.registeredEmails = registeredEmails;
     }
 
     // Getters and setters
@@ -98,5 +100,13 @@ public class Event {
 
     public void setRegisteredStudents(List<String> registeredStudents) {
         this.registeredStudents = registeredStudents;
+    }
+
+    public List<String> getRegisteredEmails(){
+        return registeredEmails;
+    }
+
+    public void setRegisteredEmails(List<String> registeredEmails){
+        this.registeredEmails = registeredEmails;
     }
 }

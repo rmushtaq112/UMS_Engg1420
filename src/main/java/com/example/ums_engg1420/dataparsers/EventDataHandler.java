@@ -3,15 +3,20 @@ package com.example.ums_engg1420.dataparsers;
 import com.example.ums_engg1420.dataclasses.Event;
 import org.apache.poi.ss.usermodel.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 
 public class EventDataHandler extends DataHandler {
 
     private static final Sheet eventSheet = workbook.getSheet("Events ");  // Correct sheet name
     private static final Map<String, Integer> columnIndexMap = getColumnIndexMap(eventSheet.getRow(0)); // Map column headers
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
 
     // Converts a row from Excel to an Event object
     private static Event rowToEventObj(Row row) {
@@ -42,8 +47,16 @@ public class EventDataHandler extends DataHandler {
                         newEvent.setLocation(cell.getStringCellValue());
                     break;
                 case "Date and Time":
-                    if (cell.getCellType() == CellType.STRING)
-                        newEvent.setDateTime(cell.getStringCellValue());
+                    if (cell.getCellType() == CellType.STRING) {
+                        try {
+                            // Try to parse the date with the correct format
+                            LocalDateTime dateTime = LocalDateTime.parse(cell.getStringCellValue(), DATE_TIME_FORMATTER);
+                            newEvent.setDateTime(dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+                        } catch (Exception e) {
+                            System.err.println("Invalid date format: " + cell.getStringCellValue());
+                            newEvent.setDateTime(cell.getStringCellValue()); // Use raw value as fallback
+                        }
+                    }
                     break;
                 case "Capacity":
                     if (cell.getCellType() == CellType.NUMERIC)
@@ -109,7 +122,12 @@ public class EventDataHandler extends DataHandler {
                     cell.setCellValue(event.getLocation());
                     break;
                 case "Date and Time":
-                    cell.setCellValue(event.getDateTime());
+                    try {
+                        LocalDateTime dateTime = LocalDateTime.parse(event.getDateTime(), DATE_TIME_FORMATTER);
+                        cell.setCellValue(dateTime.format(DATE_TIME_FORMATTER));
+                    } catch (Exception e) {
+                        cell.setCellValue(event.getDateTime());  // Fallback to raw value
+                    }
                     break;
                 case "Capacity":
                     cell.setCellValue(event.getCapacity());
@@ -122,6 +140,9 @@ public class EventDataHandler extends DataHandler {
                     break;
                 case "Registered Students":
                     cell.setCellValue(String.join(", ", event.getRegisteredStudents()));
+                    break;
+                case "Registered Emails":
+                    cell.setCellValue(String.join(", ", event.getRegisteredEmails()));
                     break;
                 default:
                     break;
@@ -166,11 +187,14 @@ public class EventDataHandler extends DataHandler {
                 case "Registered Students":
                     cell.setCellValue(String.join(", ", event.getRegisteredStudents()));
                     break;
+                case "Registered Emails":
+                    cell.setCellValue(String.join(", ", event.getRegisteredEmails()));
+                    break;
                 default:
                     break;
             }
         }
-        saveData();
+        saveData();  // Save changes
     }
 
     // Removes an event from the sheet

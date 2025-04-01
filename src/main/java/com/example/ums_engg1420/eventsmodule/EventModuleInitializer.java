@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
@@ -28,8 +29,9 @@ public class EventModuleInitializer {
             TableColumn<Event, Integer> capacityCol,
             TableColumn<Event, String> costCol,
             TableColumn<Event, String> headerCol,
-            TableColumn<Event, String> registeredByCol) {
-
+            TableColumn<Event, String> registeredByCol,
+            TableColumn<Event, Integer> numRegisteredCol // New column for registered count
+    ) {
         codeCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEventCode()));
         nameCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEventName()));
         descriptionCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDescription()));
@@ -38,8 +40,20 @@ public class EventModuleInitializer {
         capacityCol.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getCapacity()).asObject());
         costCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCost()));
         headerCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getHeaderImage()));
-        registeredByCol.setCellValueFactory(cellData -> new SimpleStringProperty(String.join(", ", cellData.getValue().getRegisteredStudents())));
 
+        // Registered students list
+        if (registeredByCol != null) {
+            registeredByCol.setCellValueFactory(cellData -> new SimpleStringProperty(
+                    String.join(", ", cellData.getValue().getRegisteredStudents())
+            ));
+        }
+
+        // Number of registered students
+        if (numRegisteredCol != null) {
+            numRegisteredCol.setCellValueFactory(cellData ->
+                    new SimpleIntegerProperty(cellData.getValue().getRegisteredStudents().size()).asObject()
+            );
+        }
     }
 
     // Method to refresh event entries and update the table
@@ -47,5 +61,15 @@ public class EventModuleInitializer {
         eventData = readEvents();  // Read updated event data
         events = FXCollections.observableArrayList(eventData);
         table.setItems(events);
+        table.refresh();  // Force refresh
+    }
+
+    // Show alert
+    public void showAlert(String title, String message, Alert.AlertType type) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

@@ -2,6 +2,7 @@ package com.example.ums_engg1420.eventsmodule;
 
 import com.example.ums_engg1420.dataclasses.Event;
 import com.example.ums_engg1420.dataparsers.EventDataHandler;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,14 +10,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.example.ums_engg1420.dataparsers.EventDataHandler.readEvents;
-import static com.example.ums_engg1420.dataparsers.SubjectDataHandler.removeSubject;
 
-// Extends EventModuleInitializer
 public class AdminEventController extends EventModuleInitializer {
 
     @FXML
@@ -24,23 +24,29 @@ public class AdminEventController extends EventModuleInitializer {
     @FXML
     private TableColumn<Event, String> colEventCode, colEventName, colDescription, colLocation, colDateTime, colCost, colHeaderImage, colRegisteredStudents;
     @FXML
-    private TableColumn<Event, Integer> colCapacity;
+    private TableColumn<Event, Integer> colCapacity, colNumRegisteredStudents;  // Column for registered count
     @FXML
     private TextField txtEventCode, txtEventName, txtDescription, txtLocation, txtDateTime, txtCapacity, txtCost, txtHeaderImage, txtRegisteredStudents;
     @FXML
     private TextField eventNameField, eventCodeField, locationField, eventTimeField, capacityField, costField;
     @FXML
     private DatePicker eventDateField;
-    @FXML TextArea descriptionField;
+    @FXML
+    private TextArea descriptionField;
 
     private ObservableList<Event> eventList;
 
     @FXML
     public void initialize() {
-        // initialize table columns using EventModuleInitializer
+        // Initialize table columns using EventModuleInitializer
         tableInitialize(
                 colEventCode, colEventName, colDescription, colLocation,
-                colDateTime, colCapacity, colCost, colHeaderImage, colRegisteredStudents
+                colDateTime, colCapacity, colCost, colHeaderImage, colRegisteredStudents, colNumRegisteredStudents
+        );
+
+        // Set up number of registered students column using comma delimiter
+        colNumRegisteredStudents.setCellValueFactory(cellData ->
+                new SimpleIntegerProperty(countRegisteredStudents(cellData.getValue().getRegisteredStudents())).asObject()
         );
 
         // Load event data
@@ -53,7 +59,18 @@ public class AdminEventController extends EventModuleInitializer {
         tblEvents.setItems(eventList);
     }
 
-    // Add
+    // Count registered students based on comma as delimiter
+    private int countRegisteredStudents(List<String> registeredStudents) {
+        if (registeredStudents == null || registeredStudents.isEmpty()) {
+            return 0;  // No registered students
+        }
+
+        // Join the list to a single string and count based on comma
+        String joinedStudents = String.join(", ", registeredStudents);
+        return joinedStudents.isEmpty() ? 0 : joinedStudents.split(",").length;
+    }
+
+    // Add Event
     @FXML
     private void addEvent(ActionEvent event) {
         String eventCode = eventCodeField.getText();
@@ -99,8 +116,7 @@ public class AdminEventController extends EventModuleInitializer {
         showAlert("Success", "Event added successfully!", Alert.AlertType.INFORMATION);
     }
 
-
-    // edit
+    // Edit Event
     @FXML
     private void editEvent(ActionEvent event) {
         Event selectedEvent = tblEvents.getSelectionModel().getSelectedItem();
@@ -121,7 +137,7 @@ public class AdminEventController extends EventModuleInitializer {
 
             // Validate required fields
             if (eventCode.isEmpty() || eventName.isEmpty() || dateTime.isEmpty() || capacityStr.isEmpty()) {
-                showAlert("Error", "All required fields must be filled out.",Alert.AlertType.INFORMATION);
+                showAlert("Error", "All required fields must be filled out.", Alert.AlertType.INFORMATION);
                 return;
             }
 
@@ -129,11 +145,9 @@ public class AdminEventController extends EventModuleInitializer {
             try {
                 capacity = Integer.parseInt(capacityStr);
             } catch (NumberFormatException e) {
-                showAlert("Error", "Capacity must be a valid number.",Alert.AlertType.INFORMATION);
+                showAlert("Error", "Capacity must be a valid number.", Alert.AlertType.INFORMATION);
                 return;
             }
-
-
 
             // Parse registered students from a comma-separated string
             List<String> registeredStudents = Arrays.stream(registeredStudentsStr.split(","))
@@ -159,91 +173,25 @@ public class AdminEventController extends EventModuleInitializer {
         }
     }
 
-    @FXML
-    private void uploadImage(){
-        System.out.println("uploading");
-    }
-
-    // delete
+    // Delete Event
     @FXML
     private void deleteEvent(ActionEvent event) {
         Event selectedEvent = tblEvents.getSelectionModel().getSelectedItem();
 
         if (selectedEvent != null) {
-            // Get the correct index of the selected event
             int selectedIndex = eventList.indexOf(selectedEvent);
 
-            // Remove the event from the ObservableList and TableView
             if (selectedIndex >= 0) {
                 eventList.remove(selectedIndex);
-
-                // Delete the corresponding entry from the Excel sheet
-                EventDataHandler.deleteEvent(selectedIndex + 1);  // Pass the correct rowIndex to deleteEvent()
-
-                // Refresh the entries to reflect changes
+                EventDataHandler.deleteEvent(selectedIndex + 1);
                 refreshEntries(tblEvents);
-
-                // Clear form and show confirmation
                 clearForm();
                 showAlert("Success", "Event deleted successfully!", Alert.AlertType.INFORMATION);
             }
         } else {
             showAlert("Error", "Please select an event to delete.", Alert.AlertType.ERROR);
         }
-    }
-
-    @FXML
-    public void viewEvents() {
-        System.out.println("Viewing events...");
-    }
-
-    @FXML
-    public void searchEvents() {
-        System.out.println("Searching events...");
-    }
-
-    @FXML
-    public void manageRegistrations() {
-        System.out.println("Managing registrations...");
-    }
-
-    // event details
-    private Event getEventFromForm() {
-        String eventCode = txtEventCode.getText();
-        String eventName = txtEventName.getText();
-        String description = txtDescription.getText();
-        String location = txtLocation.getText();
-        String dateTime = txtDateTime.getText();
-        int capacity = Integer.parseInt(txtCapacity.getText());
-        String cost = txtCost.getText();
-        String headerImage = txtHeaderImage.getText();
-
-        List<String> registeredStudents = Arrays.stream(txtRegisteredStudents.getText().split(","))
-                .map(String::trim)
-                .collect(Collectors.toList());
-
-        return new Event(eventCode, eventName, description, location, dateTime,
-                capacity, cost, headerImage, registeredStudents);
-    }
-
-    // Validate
-    private boolean validateInput() {
-        if (txtEventCode.getText().isEmpty() || txtEventName.getText().isEmpty() || txtDescription.getText().isEmpty()
-                || txtLocation.getText().isEmpty() || txtDateTime.getText().isEmpty()
-                || txtCapacity.getText().isEmpty() || txtCost.getText().isEmpty() || txtHeaderImage.getText().isEmpty()
-                || txtRegisteredStudents.getText().isEmpty()) {
-            showAlert("Error", "Please fill in all fields.", Alert.AlertType.ERROR);
-            return false;
-        }
-
-        try {
-            Integer.parseInt(txtCapacity.getText());
-        } catch (NumberFormatException e) {
-            showAlert("Error", "Capacity must be a valid number.", Alert.AlertType.ERROR);
-            return false;
-        }
-
-        return true;
+        refreshEntries(tblEvents);
     }
 
     // Clear form
@@ -259,12 +207,35 @@ public class AdminEventController extends EventModuleInitializer {
         txtRegisteredStudents.clear();
     }
 
-    // Alert helper
-    private void showAlert(String title, String message, Alert.AlertType type) {
-        Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+    @FXML
+    private void populateFormFromSelectedRow(MouseEvent event) {
+        Event selectedEvent = tblEvents.getSelectionModel().getSelectedItem();
+
+        if (selectedEvent != null) {
+            txtEventCode.setText(selectedEvent.getEventCode());
+            txtEventName.setText(selectedEvent.getEventName());
+            txtDescription.setText(selectedEvent.getDescription());
+            txtLocation.setText(selectedEvent.getLocation());
+
+            try {
+                // Split date and time correctly
+                String dateTime = selectedEvent.getDateTime();
+                String datePart = dateTime.split(" ")[0];  // Extract date portion
+                String timePart = dateTime.split(" ")[1];  // Extract time portion
+
+                // Parse date correctly
+                eventDateField.setValue(LocalDate.parse(datePart));  // Set DatePicker
+                eventTimeField.setText(timePart);  // Set time field
+            } catch (Exception e) {
+                System.err.println("Error parsing date for form: " + e.getMessage());
+                eventDateField.setValue(null);
+                eventTimeField.clear();
+            }
+
+            txtCapacity.setText(String.valueOf(selectedEvent.getCapacity()));
+            txtCost.setText(selectedEvent.getCost());
+            txtHeaderImage.setText(selectedEvent.getHeaderImage());
+            txtRegisteredStudents.setText(String.join(", ", selectedEvent.getRegisteredStudents()));
+        }
     }
 }
