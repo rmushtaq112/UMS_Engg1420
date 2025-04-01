@@ -3,56 +3,58 @@ package com.example.ums_engg1420;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import java.io.IOException;
 
-//student's, not faculty!!
-
 public class UserDashboardController {
 
+    @FXML private StackPane mainContent;
     @FXML private Label lblWelcome;
     @FXML private Button btnDashboard;
     @FXML private Button btnMyCourses;
     @FXML private Button btnSubjects;
+    @FXML private Button btnFacultyLogin;  // Added Faculty Login button
     @FXML private Button btnFaculty;
     @FXML private Button btnEvents;
-    @FXML private Button btnStudentManagement;
     @FXML private Button btnLogout;
 
     @FXML
     public void initialize() {
-        lblWelcome.setText("Welcome, Student!");
+        lblWelcome.setText("Welcome, User!");
 
-        // Event handler for Student Management button
-        btnStudentManagement.setOnAction(event -> openStudentManagement());
-        btnLogout.setOnAction(event -> logout());
+        btnDashboard.setOnAction(e -> loadPage("UserDashboardContent.fxml"));
+        btnMyCourses.setOnAction(e -> loadPage("UserCourseManagement.fxml"));
+        btnSubjects.setOnAction(e -> loadPage("UserSubjects.fxml"));
+        btnFacultyLogin.setOnAction(e -> loadPage("FacultyDashboard.fxml")); // Action for Faculty Login
+        btnFaculty.setOnAction(e -> loadPage("FacultyDashboard.fxml"));
+        btnEvents.setOnAction(e -> loadPage("StudentEventManagement.fxml"));
+        btnLogout.setOnAction(e -> logout());
     }
 
-    private void openStudentManagement() {
+    private void loadPage(String fxmlFile) {
         try {
-            Stage stage = (Stage) btnStudentManagement.getScene().getWindow();
-            Parent root = FXMLLoader.load(getClass().getResource("/com/example/ums_engg1420/StudentManagement.fxml"));
-            Scene scene = new Scene(root, 800, 600);
-            stage.setScene(scene);
-            stage.setTitle("Student Management");
-            stage.show();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
+            Parent newPage = loader.load();
+            mainContent.getChildren().setAll(newPage);
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Error: Could not load StudentManagement.fxml. Check the file path.");
+            System.out.println("ERROR: Could not load " + fxmlFile);
         }
     }
 
     private void logout() {
+        Stage stage = (Stage) btnLogout.getScene().getWindow();
+        stage.close();
+
         try {
-            Stage stage = (Stage) btnLogout.getScene().getWindow();
             Parent root = FXMLLoader.load(getClass().getResource("LoginPage.fxml"));
-            Scene scene = new Scene(root, 600, 400);
-            stage.setScene(scene);
-            stage.setTitle("Login");
-            stage.show();
+            Stage loginStage = new Stage();
+            loginStage.setTitle("Login");
+            loginStage.setScene(new javafx.scene.Scene(root, 300, 250));
+            loginStage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }

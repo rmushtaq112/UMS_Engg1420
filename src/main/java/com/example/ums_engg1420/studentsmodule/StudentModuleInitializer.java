@@ -61,5 +61,9 @@ public class StudentModuleInitializer {
         // Placeholder logic to fetch row index for the logged-in student
         return 1; // This should be dynamically fetched
     }
+
+    protected void setStudent(Student student) {
+
+    }
 }
 

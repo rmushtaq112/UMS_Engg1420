@@ -3,39 +3,33 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.ums_engg1420.studentsmodule.UserStudentController"
-            prefHeight="600.0" prefWidth="800.0">
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.ums_engg1420.eventsmodule.UserEventController">
 
-    <!-- Root Layout -->
-    <VBox spacing="20" alignment="TOP_CENTER" AnchorPane.topAnchor="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+    <VBox spacing="10" alignment="TOP_CENTER" prefWidth="800" prefHeight="600">
 
-        <!-- Title Header -->
-        <Label text="Student Event Calendar"
-               style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+        <!-- Table for User to View Events -->
+        <TableView fx:id="tblUserEvents" prefHeight="400.0" prefWidth="750.0">
+            <columns>
+                <TableColumn fx:id="colEventCode" text="Event Code" />
+                <TableColumn fx:id="colEventName" text="Event Name" />
+                <TableColumn fx:id="colDescription" text="Description" />
+                <TableColumn fx:id="colLocation" text="Location" />
+                <TableColumn fx:id="colDateTime" text="Date and Time" />
+                <TableColumn fx:id="colCapacity" text="Capacity" />
+                <TableColumn fx:id="colCost" text="Cost" />
+                <TableColumn fx:id="colHeaderImage" text="Header Image" />
+            </columns>
+        </TableView>
 
-        <!-- Calendar Picker and Action Section -->
-        <HBox spacing="15" alignment="CENTER">
-            <!-- Date Picker -->
-            <DatePicker fx:id="calendarPicker" promptText="Select a Date"/>
-
-            <!-- Button to View Events -->
-            <Button fx:id="btnViewEvents" text="View Events" onAction="#viewEvents"/>
+        <!-- Date Picker and Show Events Button -->
+        <HBox spacing="10">
+            <DatePicker fx:id="datePicker" promptText="Select Date" />
+            <Button text="Show Events" onAction="#showEventsForSelectedDate" />
+            <Button text="Register" onAction="#registerForEvent" />
+            <Button text="Unregister" onAction="#unregisterFromEvent" layoutX="400" layoutY="450"/>
         </HBox>
 
-        <!-- Event Display Section -->
-        <VBox spacing="10" VBox.vgrow="ALWAYS" alignment="TOP_CENTER" prefWidth="750.0">
-            <!-- Notifications for the selected date -->
-            <Label fx:id="selectedDateLabel" text="Events for: "
-                   style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
-
-            <!-- Scrollable area for listing events -->
-            <ScrollPane fx:id="scrollPane" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" prefHeight="400.0">
-                <VBox fx:id="eventContainer" spacing="10" alignment="TOP_LEFT" prefWidth="750.0">
-                    <!-- Add dynamic content here -->
-                </VBox>
-            </ScrollPane>
-        </VBox>
+        <!-- Text Area for Event Details -->
+        <TextArea fx:id="eventDetailsArea" editable="false" prefHeight="200.0" wrapText="true" />
     </VBox>
 </AnchorPane>

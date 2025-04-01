@@ -8,15 +8,15 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+
 import java.io.IOException;
 
-public class AdminStudentController extends StudentModuleInitializer {
+public class AdminStudentController extends StudentModuleInitializer{
     //Initialize GUI Functions
     @FXML private StackPane mainContent;
     @FXML private TableView<Student> tblStudents;
@@ -25,11 +25,26 @@ public class AdminStudentController extends StudentModuleInitializer {
     @FXML private TableColumn<Student, String> colStuPic;
     @FXML private TableColumn<Student, String> ViewInfoCol;
     @FXML private Button ViewInfo;
+    @FXML private Button btnAddStudent;
+    @FXML private Button btnEditStudent;
+    @FXML private Button btnDeleteStudent;
+    @FXML private TextField txtName;
+    @FXML private TextField txtID;
+    @FXML private TextField txtPP;
+    @FXML private TextField txtEmail;
+    @FXML private TextField txtTelephone;
+    @FXML private TextField txtTuitionStatus;
+    @FXML private TextField txtAcademicProg;
+    @FXML private TextField txtTuition;
 
-        //Initialize Column Names
+
+
+    //Initialize Column Names
+    @FXML
         public void initialize() {
             setupCoulmns();
             loadStudents();
+            handleAddStudent();
         }
         //Sets up the different columns with student information
         private void setupCoulmns() {
@@ -38,12 +53,12 @@ public class AdminStudentController extends StudentModuleInitializer {
             colStuID.setCellValueFactory(new PropertyValueFactory<>("studentId"));
             colStuPic.setCellValueFactory(new PropertyValueFactory<>("profilePhoto"));
 
-            // Set up a custom cell factory for the "View Info" column
+            // Set up a custom cell factory for the "View Info" column - Supposed to be a button that loads the students info
             ViewInfoCol.setCellFactory(column -> new TableCell<>() {
-                private final Button viewButton = new Button("View Info");
+                private final Button viewInfo = new Button("View Info");
 
                 {
-                    viewButton.setOnAction(e -> {
+                    viewInfo.setOnAction(e -> {
                         Student student = getTableView().getItems().get(getIndex());
                         System.out.println("Viewing details for student: " + student.getName());
                         loadStudentDetails(student);
@@ -56,7 +71,7 @@ public class AdminStudentController extends StudentModuleInitializer {
                     if (empty) {
                         setGraphic(null);
                     } else {
-                        setGraphic(viewButton);
+                        setGraphic(viewInfo);
                     }
                 }
             });
@@ -82,5 +97,31 @@ public class AdminStudentController extends StudentModuleInitializer {
         }
     }
 
-    }//AdminStudentController
+    @FXML
+    private void handleAddStudent() {
+        System.out.println("Adding a new student...");
+
+        // Logic for adding a student
+        // Example: Open a dialog box or form to collect student details
+        openAddStudentDialog();
+    }
+
+    private void openAddStudentDialog() {
+        // Example: Load a separate FXML file for the add-student form
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("AddStudent.fxml"));
+            Parent addStudentView = loader.load();
+
+            // Create a dialog or new scene for the add-student form
+            Stage stage = new Stage();
+            stage.setTitle("Add Student");
+            stage.setScene(new Scene(addStudentView));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("ERROR: Could not load AddStudent.fxml");
+        }
+    }
+
+}//AdminStudentController
 

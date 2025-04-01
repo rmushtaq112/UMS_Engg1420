@@ -2,10 +2,12 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.TextField?>
 
-<StackPane fx:id="mainContent" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ums_engg1420.studentsmodule.AdminStudentController">
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <VBox spacing="10" alignment="TOP_CENTER">
         <!-- TableView for students -->
         <TableView fx:id="tblStudents" prefWidth="600" prefHeight="400">
@@ -19,9 +21,28 @@
                 <!-- View Info Column -->
                 <TableColumn fx:id="ViewInfoCol" text="View Info" prefWidth="150"/>
             </columns>
+            <!--Column that has a button to view the details of a specific student -->
+            <HBox spacing ="20">
+                <Button fx:id="viewInfo" text="viewInfo" />
+            </HBox>
         </TableView>
-
-        <!-- Optional View Info Button -->
-        <Button fx:id="ViewInfo" text="View Info" prefWidth="100" visible="false"/>
+        <!--Add A New Student, Edit Student and Delete Student-->
+        <HBox spacing ="10">
+            <TextField fx:id="txtName" promptText="ADD Name"/>
+            <TextField fx:id="txtID" promptText="ADD ID"/>
+            <TextField fx:id="txtPP" promptText="ADD Profile Picture"/>
+        </HBox>
+        <HBox spacing="10">
+            <TextField fx:id="txtEmail" promptText="ADD Email"/>
+            <TextField fx:id="txtTelephone" promptText="ADD Phone Number"/>
+            <TextField fx:id="txtTuitionStatus" promptText="ADD Tuition Status"/>
+        </HBox>
+        <HBox spacing="10">
+            <TextField fx:id="txtAcademicProg" promptText="ADD Current Academic Progress"/>
+            <TextField fx:id="txtTuition" promptText="ADD Tuition"/>
+            <Button fx:id="btnAddStudent" text="Add Student"/>
+            <Button fx:id="btnEditStudent" text="Edit Student"/>
+            <Button fx:id="btnDeleteStudent" text="Delete Student"/>
+        </HBox>
     </VBox>
-</StackPane>
+</AnchorPane>
