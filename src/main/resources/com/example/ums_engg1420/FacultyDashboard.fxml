@@ -34,6 +34,9 @@
 
         <ImageView fx:id="profileImageView" fitWidth="100" fitHeight="100" visible="false"/>
 
+        <!-- Button to upload profile picture placed above the degree label -->
+        <Button text="Upload Profile Picture" onAction="#handleUploadProfilePicture" visible="false" fx:id="uploadButton"/>
+
         <Label fx:id="degreeLabel" text="Degree: " visible="false"/>
         <Label fx:id="facultyEmailLabel" text="Email: " visible="false"/>
         <Label fx:id="officeLabel" text="Office: " visible="false"/>
