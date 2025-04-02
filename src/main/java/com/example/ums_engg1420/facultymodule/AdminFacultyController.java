@@ -243,13 +243,10 @@ public class AdminFacultyController {
         dialog.setContentText("Faculty Name:");
         dialog.showAndWait().ifPresent(facultyName -> {
             // Find the faculty member by name (case insensitive)
-            Faculty assignedFaculty = null;
-            for (Faculty faculty : facultyDatabase.values()) {
-                if (faculty.getName().equalsIgnoreCase(facultyName)) {
-                    assignedFaculty = faculty;
-                    break;
-                }
-            }
+            Faculty assignedFaculty = facultyDatabase.values().stream()
+                    .filter(faculty -> faculty.getName().equalsIgnoreCase(facultyName))
+                    .findFirst()
+                    .orElse(null);
 
             if (assignedFaculty == null) {
                 showAlert("Error", "Faculty member not found.");
@@ -257,23 +254,21 @@ public class AdminFacultyController {
             }
 
             // Proceed to assign the faculty member to the selected subject
-            try {
-                File file = new File("facultysubjects.xlsx");
-                Workbook workbook;
-                Sheet sheet;
+            File file = new File("facultysubjects.xlsx");
+            Workbook workbook;
+            Sheet sheet;
 
+            try {
                 if (file.exists()) {
-                    // Safely open the existing file and prevent corruption
-                    try (FileInputStream fileIn = new FileInputStream(file); Workbook existingWorkbook = WorkbookFactory.create(fileIn)) {
-                        workbook = existingWorkbook;
+                    // Open the existing file safely
+                    try (FileInputStream fileIn = new FileInputStream(file)) {
+                        workbook = WorkbookFactory.create(fileIn);
                         sheet = workbook.getSheetAt(0);
                     }
                 } else {
-                    // Create a new file if it does not exist
+                    // Create a new workbook if file does not exist
                     workbook = new XSSFWorkbook();
                     sheet = workbook.createSheet("Faculty Assignments");
-
-                    // Create header row
                     Row headerRow = sheet.createRow(0);
                     headerRow.createCell(0).setCellValue("Subject Code");
                     headerRow.createCell(1).setCellValue("Subject Name");
@@ -281,7 +276,7 @@ public class AdminFacultyController {
                     headerRow.createCell(3).setCellValue("Faculty Email");
                 }
 
-                // Add assignment to the sheet
+                // Append new assignment data
                 int rowNum = sheet.getLastRowNum() + 1;
                 Row row = sheet.createRow(rowNum);
                 row.createCell(0).setCellValue(selectedSubject.getSubjectCode());
@@ -289,7 +284,7 @@ public class AdminFacultyController {
                 row.createCell(2).setCellValue(assignedFaculty.getName());
                 row.createCell(3).setCellValue(assignedFaculty.getEmail());
 
-                // Save the updated workbook to file
+                // Save the updated workbook
                 try (FileOutputStream fileOut = new FileOutputStream(file)) {
                     workbook.write(fileOut);
                 }
@@ -300,4 +295,5 @@ public class AdminFacultyController {
             }
         });
     }
+
 }
