@@ -1,5 +1,6 @@
 package com.example.ums_engg1420.facultymodule;
-
+import com.example.ums_engg1420.dataclasses.Faculty;
+import com.example.ums_engg1420.dataclasses.Subject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -275,41 +276,5 @@ public class AdminFacultyController {
                 showAlert("Error", "Failed to assign faculty member to subject.");
             }
         });
-    }
-    // Faculty class to hold faculty details
-    public static class Faculty {
-        private String name;
-        private String degree;
-        private String email;
-        private String office;
-        private String researchInterest;
-
-        public Faculty(String name, String degree,   String email, String office, String researchInterest) {
-            this.name = name;
-            this.degree = degree;
-            this.email = email;
-            this.office = office;
-            this.researchInterest = researchInterest;
-        }
-
-        public String getName() { return name; }
-        public String getDegree() { return degree; }
-        public String getEmail() { return email; }
-        public String getOffice() { return office; }
-        public String getResearchInterest() { return researchInterest; }
-    }
-
-    // Subject class to hold subject details
-    public static class Subject {
-        private String subjectName;
-        private String subjectCode;
-
-        public Subject(String subjectName, String subjectCode) {
-            this.subjectName = subjectName;
-            this.subjectCode = subjectCode;
-        }
-
-        public String getSubjectName() { return subjectName; }
-        public String getSubjectCode() { return subjectCode; }
     }
 }
