@@ -21,6 +21,7 @@
                 </columns>
             </TableView>
             <Button text="Delete Faculty" fx:id="deleteButton" onAction="#handleDeleteFaculty" disable="true" />
+            <Button text="Edit Faculty" fx:id="editButton" onAction="#handleEditFaculty" disable="true" /> <!-- Added Edit Button -->
 
             <!-- New Table for Subject and Subject Code -->
             <Label text="Assigned Subjects" style="-fx-font-size: 16px; -fx-font-weight: bold;" />

@@ -10,7 +10,7 @@
 <AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <VBox spacing="10" alignment="TOP_CENTER">
         <!-- TableView for students -->
-        <TableView fx:id="tblStudents" prefWidth="600" prefHeight="400">
+        <TableView fx:id="tblStudents" prefWidth="1050" prefHeight="400">
             <!-- Name Column -->
             <columns>
                 <TableColumn fx:id="colStuName" text="Name" prefWidth="150"/>
@@ -19,7 +19,10 @@
                 <!-- Profile Picture Column -->
                 <TableColumn fx:id="colStuPic" text="Profile Picture" prefWidth="150"/>
                 <!-- View Info Column -->
-                <TableColumn fx:id="ViewInfoCol" text="View Info" prefWidth="150"/>
+                <TableColumn fx:id="colStuEmail" text="Email" prefWidth="150"/>
+                <TableColumn fx:id="colStuPhone" text="Phone Number" prefWidth="150"/>
+                <TableColumn fx:id="colStuTuition" text="Tuition" prefWidth="150"/>
+                <TableColumn fx:id="colStuAcaProg" text="Academic Progress" prefWidth="150"/>
             </columns>
             <!--Column that has a button to view the details of a specific student -->
             <HBox spacing ="20">

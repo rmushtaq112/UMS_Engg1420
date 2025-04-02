@@ -8,6 +8,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.DoubleProperty;
 
 public class Student {
+
     private final StringProperty studentId;
     private final StringProperty name;
     private final StringProperty email;
@@ -19,20 +20,55 @@ public class Student {
     private final StringProperty academicLevel;
     private final StringProperty thesisTitle;
     private final DoubleProperty progress;
+    private final StringProperty password;
+    private final StringProperty subjectsRegistered;
 
-    public Student(String studentId, String name) {
+    // Full constructor to initialize all fields
+    public Student(String studentId, String name, String email, String address, String telephone, String tuitionStatus,
+                   int currentSemester, String academicLevel, String thesisTitle, double progress,
+                   String password, String profilePhoto, String subjectsRegistered) {
         this.studentId = new SimpleStringProperty(studentId);
         this.name = new SimpleStringProperty(name);
+        this.email = new SimpleStringProperty(email);
+        this.profilePhoto = new SimpleStringProperty(profilePhoto);
+        this.address = new SimpleStringProperty(address);
+        this.telephone = new SimpleStringProperty(telephone);
+        this.tuitionStatus = new SimpleStringProperty(tuitionStatus);
+        this.currentSemester = new SimpleIntegerProperty(currentSemester);
+        this.academicLevel = new SimpleStringProperty(academicLevel);
+        this.thesisTitle = new SimpleStringProperty(thesisTitle);
+        this.progress = new SimpleDoubleProperty(progress);
+        this.password = new SimpleStringProperty(password);
+        this.subjectsRegistered = new SimpleStringProperty(subjectsRegistered);
+    }
+
+    // Updated constructor with handling for null values
+    public Student(String placeholder, Object name) {
+        // Initialize all properties
+        this.studentId = new SimpleStringProperty(placeholder);
+
+        // Handle name being null
+        if (name == null) {
+            this.name = new SimpleStringProperty("Unknown");  // Default value for name
+        } else {
+            this.name = new SimpleStringProperty(name.toString());  // Convert to String if name is not null
+        }
+
+        // Initialize other properties with default values or empty strings
         this.email = new SimpleStringProperty("");
         this.profilePhoto = new SimpleStringProperty("");
         this.address = new SimpleStringProperty("");
         this.telephone = new SimpleStringProperty("");
         this.tuitionStatus = new SimpleStringProperty("");
-        this.currentSemester = new SimpleIntegerProperty(0);
+        this.currentSemester = new SimpleIntegerProperty(0); // Default value of 0 for semester
         this.academicLevel = new SimpleStringProperty("");
-        this.thesisTitle = new SimpleStringProperty("");
-        this.progress = new SimpleDoubleProperty(0.0);
+        this.thesisTitle = new SimpleStringProperty(""); // Default value
+        this.progress = new SimpleDoubleProperty(0.0); // Default progress to 0.0
+        this.password = new SimpleStringProperty("");
+        this.subjectsRegistered = new SimpleStringProperty("");
     }
+
+    // Getter and setter methods for all fields
 
     public String getStudentId() {
         return studentId.get();
@@ -165,4 +201,31 @@ public class Student {
     public DoubleProperty progressProperty() {
         return progress;
     }
+
+    public String getPassword() {
+        return password.get();
+    }
+
+    public void setPassword(String password) {
+        this.password.set(password);
+    }
+
+    public StringProperty passwordProperty() {
+        return password;
+    }
+
+    public String getSubjectsRegistered() {
+        return subjectsRegistered.get();
+    }
+
+    public void setSubjectsRegistered(String subjectsRegistered) {
+        this.subjectsRegistered.set(subjectsRegistered);
+    }
+
+    public StringProperty subjectsRegisteredProperty() {
+        return subjectsRegistered;
+    }
 }
+
+
+

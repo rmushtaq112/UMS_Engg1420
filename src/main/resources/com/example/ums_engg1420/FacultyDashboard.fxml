@@ -34,8 +34,11 @@
 
         <ImageView fx:id="profileImageView" fitWidth="100" fitHeight="100" visible="false"/>
 
-        <!-- Button to upload profile picture placed above the degree label -->
-        <Button text="Upload Profile Picture" onAction="#handleUploadProfilePicture" visible="false" fx:id="uploadButton"/>
+        <!-- Buttons for profile picture and changing password -->
+        <HBox spacing="10" alignment="CENTER" visible="false" fx:id="buttonBox">
+            <Button text="Upload Profile Picture" onAction="#handleUploadProfilePicture" fx:id="uploadButton"/>
+            <Button text="Change Password" onAction="#handleChangePassword" fx:id="changePasswordButton"/>
+        </HBox>
 
         <Label fx:id="degreeLabel" text="Degree: " visible="false"/>
         <Label fx:id="facultyEmailLabel" text="Email: " visible="false"/>
@@ -43,9 +46,9 @@
         <Label fx:id="researchInterestLabel" text="Research Interest: " visible="false"/>
     </VBox>
 
-    <!-- Table for Subject Taught -->
+    <!-- Table for Subject Taught, moved further down -->
     <VBox alignment="CENTER" spacing="20" prefWidth="400"
-          AnchorPane.topAnchor="300" AnchorPane.leftAnchor="160" visible="false" fx:id="facultyTableBox">
+          AnchorPane.topAnchor="400" AnchorPane.leftAnchor="160" visible="false" fx:id="facultyTableBox">
         <TableView fx:id="facultyTable" prefWidth="400" prefHeight="200" visible="false">
             <columns>
                 <TableColumn fx:id="subjectColumn" text="Subject Taught" prefWidth="400"/>

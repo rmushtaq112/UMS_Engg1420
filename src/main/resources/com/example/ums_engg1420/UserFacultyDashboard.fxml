@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.ums_engg1420.facultymodule.UserFacultyController"
+            prefHeight="600.0" prefWidth="600.0">
+
+    <TableView fx:id="facultyTable" prefWidth="600" prefHeight="250" layoutY="10">
+        <columns>
+            <TableColumn fx:id="colName" text="Name" prefWidth="120" />
+            <TableColumn fx:id="colDegree" text="Degree" prefWidth="120" />
+            <TableColumn fx:id="colEmail" text="Email" prefWidth="150" />
+            <TableColumn fx:id="colOffice" text="Office" prefWidth="120" />
+            <TableColumn fx:id="colResearch" text="Research Interest" prefWidth="120" />
+        </columns>
+    </TableView>
+
+    <!-- New TableView for Faculty Subjects -->
+    <TableView fx:id="facultySubjectTable" prefWidth="600" prefHeight="250" layoutY="270">
+        <columns>
+            <TableColumn fx:id="colSubjectCode" text="Subject Code" prefWidth="120" />
+            <TableColumn fx:id="colSubjectName" text="Subject Name" prefWidth="240" />
+            <TableColumn fx:id="colFacultyName" text="Faculty Name" prefWidth="240" />
+        </columns>
+    </TableView>
+
+</AnchorPane>
