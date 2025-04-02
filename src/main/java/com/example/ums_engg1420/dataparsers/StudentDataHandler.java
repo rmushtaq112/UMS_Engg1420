@@ -2,16 +2,36 @@ package com.example.ums_engg1420.dataparsers;
 
 import com.example.ums_engg1420.dataclasses.Student;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 public class StudentDataHandler extends DataHandler {
-    private static final Sheet studentSheet = workbook.getSheet("Students");
-    private static final Map<String, Integer> columnIndexMap = getColumnIndexMap(studentSheet.getRow(0));
+    private static Sheet studentSheet;
+    private static Map<String, Integer> columnIndexMap;
 
+    // Loads the student sheet from the Excel file
+    private static void loadStudentSheet() {
+        try (FileInputStream file = new FileInputStream(new File("path_to_excel_file"))) {
+            Workbook workbook = new XSSFWorkbook(file);
+            studentSheet = workbook.getSheet("Students");
+            // Initialize columnIndexMap only after the sheet is loaded
+            columnIndexMap = getColumnIndexMap(studentSheet.getRow(0));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Converts a row to a Student object
     private static Student rowToStudentObj(Row row) {
+        if (studentSheet == null) {
+            loadStudentSheet();  // Ensure the sheet is loaded before processing rows
+        }
+
         Student newStudent = new Student("PLACEHOLDER", null);
 
         // Converts a row from the sheet into a Student object
@@ -65,6 +85,10 @@ public class StudentDataHandler extends DataHandler {
 
     // Adds or updates student data in the sheet at the specified row index
     private static void addToData(Student student, int rowIndex) {
+        if (studentSheet == null) {
+            loadStudentSheet();  // Ensure the sheet is loaded before adding data
+        }
+
         Row row = studentSheet.getRow(rowIndex);
 
         if (row == null) {
@@ -115,13 +139,19 @@ public class StudentDataHandler extends DataHandler {
 
         saveData();
     }
+
     // Updates the student's profile by calling addToData
     public static void updateProfile(Student student, int rowIndex) {
         addToData(student, rowIndex);
         saveData();
     }
+
     // Uploads a profile photo by setting the appropriate cell value
     public static void uploadProfilePhoto(int rowIndex, String photoPath) {
+        if (studentSheet == null) {
+            loadStudentSheet();  // Ensure the sheet is loaded before updating profile photo
+        }
+
         Row row = studentSheet.getRow(rowIndex);
         if (row != null) {
             Cell cell = row.createCell(columnIndexMap.get("Profile Photo"));
@@ -129,9 +159,13 @@ public class StudentDataHandler extends DataHandler {
         }
         saveData();
     }
-    // Retrieves the tuition status of a student at a given row index
 
+    // Retrieves the tuition status of a student at a given row index
     public static String getTuitionStatus(int rowIndex) {
+        if (studentSheet == null) {
+            loadStudentSheet();  // Ensure the sheet is loaded before retrieving tuition status
+        }
+
         Row row = studentSheet.getRow(rowIndex);
         if (row != null) {
             Cell cell = row.getCell(columnIndexMap.get("Tuition"));
@@ -139,8 +173,8 @@ public class StudentDataHandler extends DataHandler {
         }
         return "Unknown";
     }
-    // Sends an email notification (Placeholder for actual email sending logic)
 
+    // Sends an email notification (Placeholder for actual email sending logic)
     public static void sendEmailNotification(String email, String message) {
         System.out.println("Sending email to: " + email + " with message: " + message);
         // Email sending logic to be implemented
@@ -156,7 +190,12 @@ public class StudentDataHandler extends DataHandler {
         return loggedInStudent; // Returns the logged-in student
     }
 
+    // Retrieves the row index of a student by their ID
     public static int getStudentRowIndex(String studentId) {
+        if (studentSheet == null) {
+            loadStudentSheet();  // Ensure the sheet is loaded before finding the student
+        }
+
         for (int i = 1; i <= studentSheet.getLastRowNum(); i++) {
             Row row = studentSheet.getRow(i);
             if (row != null) {
@@ -170,4 +209,10 @@ public class StudentDataHandler extends DataHandler {
         }
         return -1; // Return -1 if student is not found
     }
+
+    // Initialize the class by loading the sheet
+    static {
+        loadStudentSheet(); // Ensure the sheet is loaded when the class is loaded
+    }
 }
+
