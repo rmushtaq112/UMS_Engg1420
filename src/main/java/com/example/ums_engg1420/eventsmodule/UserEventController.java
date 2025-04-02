@@ -20,6 +20,7 @@ import static com.example.ums_engg1420.dataparsers.EventDataHandler.readEvents;
 
 public class UserEventController extends EventModuleInitializer {
 
+    // Table and column references from FXML UI
     @FXML
     private TableView<Event> tblUserEvents;
 
@@ -35,11 +36,12 @@ public class UserEventController extends EventModuleInitializer {
     @FXML
     private TextArea eventDetailsArea;  // To show details for selected date
 
-    private ObservableList<Event> eventList;
+    private ObservableList<Event> eventList; // Holds all events visible to user
 
+    // Called when the controller is loaded by JavaFX
     @FXML
     public void initialize() {
-        // Initialize table columns without Registered Students column
+        // Initialize table columns, set up table columns using base class method (no admin-specific column i.e Registered Students)
         tableInitialize(
                 colEventCode, colEventName, colDescription, colLocation,
                 colDateTime, colCapacity, colCost, colHeaderImage, null, null
@@ -49,7 +51,7 @@ public class UserEventController extends EventModuleInitializer {
         loadUserEventData();
     }
 
-    // Load event data for users without admin controls
+    // Load event data for users without admin controls, (read from Excel) into the observable list and binds to the table, ensures fresh data on every load
     private void loadUserEventData() {
         eventList = FXCollections.observableArrayList(readEvents());
         tblUserEvents.setItems(eventList);
@@ -61,11 +63,12 @@ public class UserEventController extends EventModuleInitializer {
         refreshEntries(tblUserEvents);
     }
 
-    // Show events for selected date using DatePicker
+    // Show events for selected date using DatePicker, filters the full event list to match the selected date.
     @FXML
     private void showEventsForSelectedDate() {
         if (datePicker.getValue() != null) {
             String selectedDate = datePicker.getValue().toString();  // Get date string
+            // Filter events where the datetime string starts with the selected date
             List<Event> filteredEvents = eventList.stream()
                     .filter(event -> event.getDateTime().startsWith(selectedDate))
                     .toList();
@@ -87,11 +90,12 @@ public class UserEventController extends EventModuleInitializer {
         }
     }
 
+    //allows to register for event, prevent duplicates too
     @FXML
     private void registerForEvent() {
         Event selectedEvent = tblUserEvents.getSelectionModel().getSelectedItem();
         if (selectedEvent != null) {
-            Dialog<String> dialog = new TextInputDialog();
+            Dialog<String> dialog = new TextInputDialog(); // prompt name
             dialog.setTitle("Register for Event");
             dialog.setHeaderText("Enter your name to register:");
             dialog.setContentText("Name:");
@@ -108,6 +112,7 @@ public class UserEventController extends EventModuleInitializer {
                                 .collect(Collectors.toList());
                     }
 
+                    // Check for duplicate registration
                     if (!registeredStudents.contains(userName)) {
                         registeredStudents.add(userName);
                         selectedEvent.setRegisteredStudents(registeredStudents);
@@ -116,7 +121,7 @@ public class UserEventController extends EventModuleInitializer {
                         int excelRowIndex = EventDataHandler.getRowIndexByEventCode(selectedEvent.getEventCode());
                         if (excelRowIndex != -1) {
                             EventDataHandler.updateEvent(selectedEvent, excelRowIndex);
-                            refreshEntries(tblUserEvents);
+                            refreshEntries(tblUserEvents); //refresh ui
                             showAlert("Success", "You have registered for " + selectedEvent.getEventName() + ".", Alert.AlertType.INFORMATION);
                         } else {
                             showAlert("Error", "Failed to locate event in Excel file.", Alert.AlertType.ERROR);
@@ -132,6 +137,7 @@ public class UserEventController extends EventModuleInitializer {
             showAlert("Error", "Please select an event to register.", Alert.AlertType.ERROR);
         }
     }
+    //Prompts the user for their name and then shows a list of all events they are registered for.
     @FXML
     private void viewMyRegisteredEvents() {
         TextInputDialog dialog = new TextInputDialog();
@@ -143,6 +149,7 @@ public class UserEventController extends EventModuleInitializer {
         result.ifPresent(userName -> {
             String inputName = userName.trim();
             if (!inputName.isEmpty()) {
+                // Filter events where the user's name appears in the registered student list
                 List<Event> registeredEvents = eventList.stream()
                         .filter(event -> {
                             List<String> students = event.getRegisteredStudents();
@@ -159,6 +166,7 @@ public class UserEventController extends EventModuleInitializer {
                         })
                         .toList();
 
+                // show results as an alert
                 if (!registeredEvents.isEmpty()) {
                     StringBuilder sb = new StringBuilder("You are registered for the following events:\n\n");
                     for (Event event : registeredEvents) {
