@@ -48,6 +48,8 @@
         </columns>
     </TableView>
 
+    <Button text="View Attendee List" onAction="#viewAttendeeList" />
+
     <HBox spacing="10">
 <!--        <Button text="View Events" onAction="#viewEvents" />-->
 <!--        <Button text="Search Events" onAction="#searchEvents" />-->

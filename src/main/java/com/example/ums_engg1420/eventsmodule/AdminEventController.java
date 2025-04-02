@@ -7,8 +7,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.print.PrinterJob;
+import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.geometry.Insets;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -35,7 +40,19 @@ public class AdminEventController extends EventModuleInitializer {
     private TextArea descriptionField;
 
     private ObservableList<Event> eventList;
+    //for edit
     private Event editingEvent = null;
+    //for print attendee list
+    private void printNode(Node node) {
+        PrinterJob job = PrinterJob.createPrinterJob();
+        if (job != null && job.showPrintDialog(node.getScene().getWindow())) {
+            boolean success = job.printPage(node);
+            if (success) {
+                job.endJob();
+            }
+        }
+    }
+
 
     @FXML
     public void initialize() {
@@ -256,5 +273,53 @@ public class AdminEventController extends EventModuleInitializer {
             txtHeaderImage.setText(selectedEvent.getHeaderImage());
             txtRegisteredStudents.setText(String.join(", ", selectedEvent.getRegisteredStudents()));
         }
+    }
+    //attendee list
+    @FXML
+    private void viewAttendeeList(ActionEvent event) {
+        Event selectedEvent = tblEvents.getSelectionModel().getSelectedItem();
+
+        if (selectedEvent == null) {
+            showAlert("Error", "Please select an event to view attendees.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        List<String> registeredStudents = selectedEvent.getRegisteredStudents();
+
+        // Create a new window (Stage)
+        Stage printStage = new Stage();
+        printStage.setTitle("Attendee List - " + selectedEvent.getEventName());
+
+        VBox layout = new VBox(10);
+        layout.setPadding(new Insets(20, 20, 20, 20));
+
+        Label header = new Label("Attendees for: " + selectedEvent.getEventName());
+        header.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+
+        TextArea attendeeArea = new TextArea();
+        attendeeArea.setEditable(false);
+        attendeeArea.setWrapText(true);
+
+        if (registeredStudents == null || registeredStudents.isEmpty()) {
+            attendeeArea.setText("No students have registered for this event.");
+        } else {
+            StringBuilder sb = new StringBuilder();
+            int count = 1;
+            for (String student : registeredStudents) {
+                if (!student.trim().isEmpty()) {
+                    sb.append(count++).append(". ").append(student.trim()).append("\n");
+                }
+            }
+            attendeeArea.setText(sb.toString());
+        }
+
+        Button printButton = new Button("Print");
+        printButton.setOnAction(e -> printNode(attendeeArea));
+
+        layout.getChildren().addAll(header, attendeeArea, printButton);
+
+        Scene scene = new Scene(layout, 500, 500);
+        printStage.setScene(scene);
+        printStage.show();
     }
 }
