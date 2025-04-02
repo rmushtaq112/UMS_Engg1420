@@ -14,6 +14,7 @@ import javafx.util.Pair;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.example.ums_engg1420.dataparsers.EventDataHandler.readEvents;
 
@@ -89,77 +90,42 @@ public class UserEventController extends EventModuleInitializer {
     @FXML
     private void registerForEvent() {
         Event selectedEvent = tblUserEvents.getSelectionModel().getSelectedItem();
-
         if (selectedEvent != null) {
-            Dialog<Pair<String, String>> dialog = new Dialog<>();
+            Dialog<String> dialog = new TextInputDialog();
             dialog.setTitle("Register for Event");
-            dialog.setHeaderText("Please enter your name and email to register.");
+            dialog.setHeaderText("Enter your name to register:");
+            dialog.setContentText("Name:");
 
-            // Set the button types
-            ButtonType registerButtonType = new ButtonType("Register", ButtonBar.ButtonData.OK_DONE);
-            dialog.getDialogPane().getButtonTypes().addAll(registerButtonType, ButtonType.CANCEL);
+            Optional<String> result = dialog.showAndWait();
+            result.ifPresent(userName -> {
+                userName = userName.trim();
+                if (!userName.isEmpty()) {
+                    List<String> registeredStudents = new ArrayList<>();
+                    if (selectedEvent.getRegisteredStudents() != null) {
+                        // Filter out empty strings (like "")
+                        registeredStudents = selectedEvent.getRegisteredStudents().stream()
+                                .filter(name -> name != null && !name.trim().isEmpty())
+                                .collect(Collectors.toList());
+                    }
 
-            // Create text fields for name and email
-            GridPane grid = new GridPane();
-            grid.setHgap(10);
-            grid.setVgap(10);
-
-            TextField nameField = new TextField();
-            TextField emailField = new TextField();
-
-            grid.add(new Label("Name:"), 0, 0);
-            grid.add(nameField, 1, 0);
-            grid.add(new Label("Email:"), 0, 1);
-            grid.add(emailField, 1, 1);
-
-            dialog.getDialogPane().setContent(grid);
-
-            // Get the result when the button is pressed
-            dialog.setResultConverter(dialogButton -> {
-                if (dialogButton == registerButtonType) {
-                    return new Pair<>(nameField.getText().trim(), emailField.getText().trim());
-                }
-                return null;
-            });
-
-            Optional<Pair<String, String>> result = dialog.showAndWait();
-
-            result.ifPresent(userData -> {
-                String userName = userData.getKey();
-                String userEmail = userData.getValue();
-
-                if (!userName.isEmpty() && !userEmail.isEmpty()) {
-                    // Check if registered students list is null and initialize it
-                    List<String> registeredStudents = selectedEvent.getRegisteredStudents() != null
-                            ? new ArrayList<>(selectedEvent.getRegisteredStudents())
-                            : new ArrayList<>();
-
-                    // Check if registered emails list is null and initialize it
-                    List<String> registeredEmails = selectedEvent.getRegisteredEmails() != null
-                            ? new ArrayList<>(selectedEvent.getRegisteredEmails())
-                            : new ArrayList<>();
-
-                    // Check if the user is already registered
                     if (!registeredStudents.contains(userName)) {
                         registeredStudents.add(userName);
-                        registeredEmails.add(userEmail);
-
-                        // Update the event object
                         selectedEvent.setRegisteredStudents(registeredStudents);
-                        selectedEvent.setRegisteredEmails(registeredEmails);
 
-                        // Update Excel file
-                        int selectedIndex = eventList.indexOf(selectedEvent);
-                        EventDataHandler.updateEvent(selectedEvent, selectedIndex + 1);
-
-                        // Refresh and confirm registration
-                        refreshEntries(tblUserEvents);
-                        showAlert("Success", "You have registered successfully for " + selectedEvent.getEventName() + "!", Alert.AlertType.INFORMATION);
+                        // Get actual Excel row index using event code
+                        int excelRowIndex = EventDataHandler.getRowIndexByEventCode(selectedEvent.getEventCode());
+                        if (excelRowIndex != -1) {
+                            EventDataHandler.updateEvent(selectedEvent, excelRowIndex);
+                            refreshEntries(tblUserEvents);
+                            showAlert("Success", "You have registered for " + selectedEvent.getEventName() + ".", Alert.AlertType.INFORMATION);
+                        } else {
+                            showAlert("Error", "Failed to locate event in Excel file.", Alert.AlertType.ERROR);
+                        }
                     } else {
                         showAlert("Error", "You are already registered for this event.", Alert.AlertType.ERROR);
                     }
                 } else {
-                    showAlert("Error", "Please provide valid name and email.", Alert.AlertType.ERROR);
+                    showAlert("Error", "Name cannot be empty.", Alert.AlertType.ERROR);
                 }
             });
         } else {
@@ -167,61 +133,45 @@ public class UserEventController extends EventModuleInitializer {
         }
     }
     @FXML
-    private void unregisterFromEvent() {
-        Event selectedEvent = tblUserEvents.getSelectionModel().getSelectedItem();
+    private void viewMyRegisteredEvents() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("View Registered Events");
+        dialog.setHeaderText("Enter your name to view your registered events:");
+        dialog.setContentText("Name:");
 
-        if (selectedEvent != null) {
-            TextInputDialog dialog = new TextInputDialog();
-            dialog.setTitle("Unregister from Event");
-            dialog.setHeaderText("Enter your name to unregister:");
-            dialog.setContentText("Name:");
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(userName -> {
+            String inputName = userName.trim();
+            if (!inputName.isEmpty()) {
+                List<Event> registeredEvents = eventList.stream()
+                        .filter(event -> {
+                            List<String> students = event.getRegisteredStudents();
+                            if (students == null) return false;
 
-            Optional<String> result = dialog.showAndWait();
+                            // Clean and normalize the names for comparison
+                            List<String> cleanedStudents = students.stream()
+                                    .filter(name -> name != null && !name.trim().isEmpty())
+                                    .map(String::trim)
+                                    .map(String::toLowerCase)
+                                    .toList();
 
-            if (result.isPresent() && !result.get().trim().isEmpty()) {
-                String userName = result.get().trim();
+                            return cleanedStudents.contains(inputName.toLowerCase());
+                        })
+                        .toList();
 
-                // Check if registered students list is null
-                List<String> registeredStudents = selectedEvent.getRegisteredStudents() != null
-                        ? new ArrayList<>(selectedEvent.getRegisteredStudents())
-                        : new ArrayList<>();
-
-                // Check if registered emails list is null
-                List<String> registeredEmails = selectedEvent.getRegisteredEmails() != null
-                        ? new ArrayList<>(selectedEvent.getRegisteredEmails())
-                        : new ArrayList<>();
-
-                // Find and remove the name and corresponding email
-                int indexToRemove = registeredStudents.indexOf(userName);
-
-                // Check if the index is valid before attempting to remove
-                if (indexToRemove != -1 && indexToRemove < registeredStudents.size()) {
-                    registeredStudents.remove(indexToRemove);
-
-                    // Only remove the corresponding email if the list of emails is not empty
-                    if (indexToRemove < registeredEmails.size()) {
-                        registeredEmails.remove(indexToRemove);
+                if (!registeredEvents.isEmpty()) {
+                    StringBuilder sb = new StringBuilder("You are registered for the following events:\n\n");
+                    for (Event event : registeredEvents) {
+                        sb.append("• ").append(event.getEventName())
+                                .append(" (").append(event.getDateTime()).append(")\n");
                     }
-
-                    selectedEvent.setRegisteredStudents(registeredStudents);
-                    selectedEvent.setRegisteredEmails(registeredEmails);
-
-                    // Update Excel
-                    int selectedIndex = eventList.indexOf(selectedEvent);
-                    EventDataHandler.updateEvent(selectedEvent, selectedIndex + 1);
-
-                    // Refresh and show confirmation
-                    refreshEntries(tblUserEvents);
-                    showAlert("Success", "You have unregistered from " + selectedEvent.getEventName() + ".", Alert.AlertType.INFORMATION);
+                    showAlert("Registered Events", sb.toString(), Alert.AlertType.INFORMATION);
                 } else {
-                    showAlert("Error", "Your name was not found in the registered list.", Alert.AlertType.ERROR);
+                    showAlert("No Events Found", "You are not registered for any events.", Alert.AlertType.INFORMATION);
                 }
             } else {
-                showAlert("Error", "Please provide your name to unregister.", Alert.AlertType.ERROR);
+                showAlert("Invalid Input", "Name cannot be empty.", Alert.AlertType.ERROR);
             }
-        } else {
-            showAlert("Error", "Please select an event to unregister from.", Alert.AlertType.ERROR);
-        }
+        });
     }
-
 }

@@ -26,7 +26,7 @@
             <DatePicker fx:id="datePicker" promptText="Select Date" />
             <Button text="Show Events" onAction="#showEventsForSelectedDate" />
             <Button text="Register" onAction="#registerForEvent" />
-            <Button text="Unregister" onAction="#unregisterFromEvent" layoutX="400" layoutY="450"/>
+            <Button text="View My Events" onAction="#viewMyRegisteredEvents" />
         </HBox>
 
         <!-- Text Area for Event Details -->
