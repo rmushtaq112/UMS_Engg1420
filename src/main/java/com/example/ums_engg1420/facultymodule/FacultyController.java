@@ -1,16 +1,15 @@
 package com.example.ums_engg1420.facultymodule;
 
-import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -39,6 +38,8 @@ public class FacultyController {
     @FXML private TableColumn<String, String> subjectColumn;
 
     @FXML private Button uploadButton;  // Reference to the "Upload Profile Picture" button
+    @FXML private Button changePasswordButton;  // Reference to the "Change Password" button
+    @FXML private HBox buttonBox;  // The HBox containing the buttons for profile picture and password change
 
     private String facultyName;
     private String facultyEmail;
@@ -119,8 +120,8 @@ public class FacultyController {
         facultyTableBox.setVisible(true);
         facultyTable.setVisible(true);
 
-        // Make the "Upload Profile Picture" button visible
-        uploadButton.setVisible(true);
+        // Make the "Upload Profile Picture" and "Change Password" buttons visible
+        buttonBox.setVisible(true);
 
         Stage stage = (Stage) loginBox.getScene().getWindow();
         stage.setTitle("Faculty Dashboard");
@@ -191,5 +192,52 @@ public class FacultyController {
                 showError("Error loading the image.");
             }
         }
+    }
+
+    @FXML
+    private void handleChangePassword() {
+        // Create a new VBox to hold the new password input field and a button
+        VBox changePasswordBox = new VBox();
+        changePasswordBox.setSpacing(10);
+
+        // Create a TextField for entering the new password
+        TextField newPasswordField = new TextField();
+        newPasswordField.setPromptText("Enter new password");
+
+        // Create a Button for confirming the password change
+        Button confirmButton = new Button("Confirm");
+
+        // Add functionality to the confirm button
+        confirmButton.setOnAction(event -> {
+            String newPassword = newPasswordField.getText().trim();
+
+            if (newPassword.isEmpty()) {
+                showError("Please enter a valid new password.");
+            } else {
+                // Here, you can save the new password to a file or database.
+                // For now, we will just show a confirmation message.
+                showConfirmation("Password changed successfully.");
+                // Optionally, clear the TextField and close the popup
+                newPasswordField.clear();
+            }
+        });
+
+        // Add the TextField and Button to the VBox
+        changePasswordBox.getChildren().addAll(newPasswordField, confirmButton);
+
+        // Create a new Scene or Overlay to show the password change UI
+        Stage stage = new Stage();
+        stage.setTitle("Change Password");
+        stage.setScene(new javafx.scene.Scene(changePasswordBox, 300, 150));
+        stage.show();
+    }
+
+    private void showConfirmation(String message) {
+        // This method will show a confirmation message in an alert dialog
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
