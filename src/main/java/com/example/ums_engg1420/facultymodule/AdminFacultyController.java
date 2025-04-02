@@ -13,6 +13,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -240,13 +244,13 @@ public class AdminFacultyController {
                 Sheet sheet;
 
                 if (file.exists()) {
-                    // If file exists, load it
+                    // Safely open the existing file and prevent corruption
                     try (FileInputStream fileIn = new FileInputStream(file); Workbook existingWorkbook = WorkbookFactory.create(fileIn)) {
                         workbook = existingWorkbook;
                         sheet = workbook.getSheetAt(0);
                     }
                 } else {
-                    // If file doesn't exist, create a new one
+                    // Create a new file if it does not exist
                     workbook = new XSSFWorkbook();
                     sheet = workbook.createSheet("Faculty Assignments");
 
