@@ -27,7 +27,7 @@ public class AdminFacultyController {
     @FXML private TextField nameField, degreeField, emailField, officeField, researchField;
     @FXML private TableView<Faculty> facultyTable;
     @FXML private TableColumn<Faculty, String> colName, colDegree, colEmail, colOffice, colResearch;
-    @FXML private Button deleteButton;
+    @FXML private Button deleteButton, editButton; // Added editButton
 
     // Subject fields
     @FXML private TableView<Subject> subjectTable;
@@ -48,10 +48,12 @@ public class AdminFacultyController {
 
         facultyTable.setItems(facultyList);
         deleteButton.setDisable(true);  // Disable delete button initially
+        editButton.setDisable(true); // Disable edit button initially
 
-        // Enable delete button when an item is selected
+        // Enable delete and edit buttons when an item is selected
         facultyTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             deleteButton.setDisable(newValue == null);
+            editButton.setDisable(newValue == null); // Enable edit button if an item is selected
         });
 
         // Load faculty data from Excel when the application starts
@@ -94,6 +96,22 @@ public class AdminFacultyController {
             facultyDatabase.remove(selectedFaculty.getEmail());
             facultyList.remove(selectedFaculty);
             saveFacultyToExcel();  // Save after deletion
+        }
+    }
+
+    @FXML
+    private void handleEditFaculty() {
+        Faculty selectedFaculty = facultyTable.getSelectionModel().getSelectedItem();
+        if (selectedFaculty != null) {
+            // Populate the fields with the selected faculty's current data
+            nameField.setText(selectedFaculty.getName());
+            degreeField.setText(selectedFaculty.getDegree());
+            emailField.setText(selectedFaculty.getEmail());
+            officeField.setText(selectedFaculty.getOffice());
+            researchField.setText(selectedFaculty.getResearchInterest());
+
+            // Update the faculty list when the user edits and clicks "Add Faculty" again
+            deleteButton.setDisable(true); // Disable delete button while editing
         }
     }
 
