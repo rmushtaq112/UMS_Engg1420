@@ -182,29 +182,31 @@ public class AdminEventController extends EventModuleInitializer {
             int selectedIndex = eventList.indexOf(selectedEvent);
 
             if (selectedIndex >= 0) {
-                eventList.remove(selectedIndex);
-                EventDataHandler.deleteEvent(selectedIndex + 1);
-                refreshEntries(tblEvents);
+                // Delete from Excel sheet (with +1 offset due to header row)
+                EventDataHandler.deleteEvent(selectedEvent.getEventCode());
+
+                // Reload list from Excel and update table
+                eventList.setAll(EventDataHandler.readEvents());
+                tblEvents.refresh();
+
                 clearForm();
                 showAlert("Success", "Event deleted successfully!", Alert.AlertType.INFORMATION);
             }
         } else {
             showAlert("Error", "Please select an event to delete.", Alert.AlertType.ERROR);
         }
-        refreshEntries(tblEvents);
     }
 
     // Clear form
     private void clearForm() {
-        txtEventCode.clear();
-        txtEventName.clear();
-        txtDescription.clear();
-        txtLocation.clear();
-        txtDateTime.clear();
-        txtCapacity.clear();
-        txtCost.clear();
-        txtHeaderImage.clear();
-        txtRegisteredStudents.clear();
+        if (eventCodeField != null) eventCodeField.clear();
+        if (eventNameField != null) eventNameField.clear();
+        if (locationField != null) locationField.clear();
+        if (eventDateField != null) eventDateField.setValue(null);
+        if (eventTimeField != null) eventTimeField.clear();
+        if (capacityField != null) capacityField.clear();
+        if (costField != null) costField.clear();
+        if (descriptionField != null) descriptionField.clear();
     }
 
     @FXML
