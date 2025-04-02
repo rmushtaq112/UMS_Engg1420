@@ -1,6 +1,5 @@
 package com.example.ums_engg1420;
 
-import com.example.ums_engg1420.studentsmodule.UserStudentController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,7 +16,7 @@ public class UserDashboardController {
     @FXML private Button btnDashboard;
     @FXML private Button btnMyCourses;
     @FXML private Button btnSubjects;
-    @FXML private Button btnFacultyLogin;
+    @FXML private Button btnFacultyLogin;  // Added Faculty Login button
     @FXML private Button btnFaculty;
     @FXML private Button btnEvents;
     @FXML private Button btnLogout;
@@ -26,11 +25,10 @@ public class UserDashboardController {
     public void initialize() {
         lblWelcome.setText("Welcome, User!");
 
-        // Set up button actions
-        btnDashboard.setOnAction(e -> loadPage("StudentInfo.fxml"));
+        btnDashboard.setOnAction(e -> loadPage("UserDashboardContent.fxml"));
         btnMyCourses.setOnAction(e -> loadPage("UserCourseManagement.fxml"));
         btnSubjects.setOnAction(e -> loadPage("UserSubjects.fxml"));
-        btnFacultyLogin.setOnAction(e -> loadPage("FacultyDashboard.fxml"));
+        btnFacultyLogin.setOnAction(e -> loadPage("FacultyDashboard.fxml")); // Action for Faculty Login
         btnFaculty.setOnAction(e -> loadPage("FacultyDashboard.fxml"));
         btnEvents.setOnAction(e -> loadPage("StudentEventManagement.fxml"));
         btnLogout.setOnAction(e -> logout());
@@ -39,15 +37,8 @@ public class UserDashboardController {
     private void loadPage(String fxmlFile) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
-
-            // Check if the page is StudentInfo.fxml, and if so, load with UserStudentController
-            if (fxmlFile.equals("StudentInfo.fxml")) {
-                loader.setController(new UserStudentController());  // Set UserStudentController for StudentInfo page
-            }
-
             Parent newPage = loader.load();
             mainContent.getChildren().setAll(newPage);
-
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("ERROR: Could not load " + fxmlFile);
@@ -69,4 +60,3 @@ public class UserDashboardController {
         }
     }
 }
-
