@@ -132,4 +132,46 @@ public class UserEventController extends EventModuleInitializer {
             showAlert("Error", "Please select an event to register.", Alert.AlertType.ERROR);
         }
     }
+    @FXML
+    private void viewMyRegisteredEvents() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("View Registered Events");
+        dialog.setHeaderText("Enter your name to view your registered events:");
+        dialog.setContentText("Name:");
+
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(userName -> {
+            String inputName = userName.trim();
+            if (!inputName.isEmpty()) {
+                List<Event> registeredEvents = eventList.stream()
+                        .filter(event -> {
+                            List<String> students = event.getRegisteredStudents();
+                            if (students == null) return false;
+
+                            // Clean and normalize the names for comparison
+                            List<String> cleanedStudents = students.stream()
+                                    .filter(name -> name != null && !name.trim().isEmpty())
+                                    .map(String::trim)
+                                    .map(String::toLowerCase)
+                                    .toList();
+
+                            return cleanedStudents.contains(inputName.toLowerCase());
+                        })
+                        .toList();
+
+                if (!registeredEvents.isEmpty()) {
+                    StringBuilder sb = new StringBuilder("You are registered for the following events:\n\n");
+                    for (Event event : registeredEvents) {
+                        sb.append("• ").append(event.getEventName())
+                                .append(" (").append(event.getDateTime()).append(")\n");
+                    }
+                    showAlert("Registered Events", sb.toString(), Alert.AlertType.INFORMATION);
+                } else {
+                    showAlert("No Events Found", "You are not registered for any events.", Alert.AlertType.INFORMATION);
+                }
+            } else {
+                showAlert("Invalid Input", "Name cannot be empty.", Alert.AlertType.ERROR);
+            }
+        });
+    }
 }

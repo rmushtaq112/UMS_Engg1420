@@ -72,8 +72,16 @@ public class EventDataHandler extends DataHandler {
                     break;
                 case "Registered Students":
                     if (cell.getCellType() == CellType.STRING) {
-                        List<String> registeredStudents = Arrays.asList(cell.getStringCellValue().split(", "));
-                        newEvent.setRegisteredStudents(registeredStudents);
+                        String raw = cell.getStringCellValue().trim();
+                        if (!raw.isEmpty()) {
+                            List<String> registeredStudents = Arrays.stream(raw.split(","))
+                                    .map(String::trim)
+                                    .filter(s -> !s.isEmpty())
+                                    .collect(Collectors.toList());
+                            newEvent.setRegisteredStudents(registeredStudents);
+                        } else {
+                            newEvent.setRegisteredStudents(new ArrayList<>());
+                        }
                     }
                     break;
                 default:
