@@ -2,7 +2,7 @@ package com.example.ums_engg1420.dataclasses;
 
 public class Course {
     private String courseName;
-    private String courseCode;
+    private int courseCode;
     private String subjectCode;
     private String sectionNumber;
     private int capacity;
@@ -12,7 +12,7 @@ public class Course {
     private String teacherName;
 
     // Constructor
-    public Course(String courseName, String courseCode, String subjectCode, String sectionNumber,
+    public Course(String courseName, int courseCode, String subjectCode, String sectionNumber,
                   int capacity, String lectureTime, String finalExamDate, String location, String teacherName) {
         this.courseName = courseName;
         this.courseCode = courseCode;
@@ -34,11 +34,11 @@ public class Course {
         this.courseName = courseName;
     }
 
-    public String getCourseCode() {
+    public int getCourseCode() {
         return courseCode;
     }
 
-    public void setCourseCode(String courseCode) {
+    public void setCourseCode(int courseCode) {
         this.courseCode = courseCode;
     }
 

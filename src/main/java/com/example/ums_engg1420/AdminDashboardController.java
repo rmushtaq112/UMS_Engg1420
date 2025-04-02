@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import java.io.IOException;
 
@@ -20,10 +21,12 @@ public class AdminDashboardController {
     @FXML private Button btnEventManagement;
     @FXML private Button btnSubjectManagement;
     @FXML private Button btnLogout;
+    @FXML private Label MainText;
 
     @FXML
     public void initialize() {
         lblWelcome.setText("Welcome, Admin!");
+
 
         btnDashboard.setOnAction(e -> loadPage("Dashboard.fxml"));
         btnStudentManagement.setOnAction(e -> loadPage("AdminStudentController.fxml"));
