@@ -16,7 +16,7 @@ public class StudentDataHandler extends DataHandler {
 
     // Loads the student sheet from the Excel file
     private static void loadStudentSheet() {
-        try (FileInputStream file = new FileInputStream(new File("path_to_excel_file"))) {
+        try (FileInputStream file = new FileInputStream(new File("student.xlsx"))) {
             Workbook workbook = new XSSFWorkbook(file);
             studentSheet = workbook.getSheet("Students");
             // Initialize columnIndexMap only after the sheet is loaded

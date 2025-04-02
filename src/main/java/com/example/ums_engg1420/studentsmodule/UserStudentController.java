@@ -86,7 +86,6 @@ public class UserStudentController extends StudentModuleInitializer {
 
     @FXML
     private void goBackToDashboard() {
-        // Logic for navigating back to the dashboard (can be empty if this is handled by btnProfile)
     }
 
     private void loadPage(String fxmlFile) {
