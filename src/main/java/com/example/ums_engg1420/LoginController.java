@@ -5,6 +5,7 @@ import javafx.scene.control.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.util.logging.Logger;
@@ -53,8 +54,11 @@ public class LoginController {
                 root = FXMLLoader.load(getClass().getResource("UserDashboard.fxml")); // Always loads user dashboard
             }
 
-            Scene scene = new Scene(root, 600, 400);
+            Scene scene = new Scene(root, 1000, 650);
             stage.setScene(scene);
+            scene.getStylesheets().add(getClass().getResource("src/main/resources/com/example/ums_engg1420/styles/style1.css").toExternalForm());
+            stage.setMinWidth(1000);
+            stage.setMinHeight(650);
             stage.setTitle("Dashboard - " + role);
             stage.show();
         } catch (Exception e) {

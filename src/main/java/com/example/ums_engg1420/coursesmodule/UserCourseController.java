@@ -8,7 +8,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public class UserCourseController {
+public class UserCourseController extends CourseModuleInitializer {
     //Initialize Variables
 
     @FXML private TableView<Course> tblSubjects;

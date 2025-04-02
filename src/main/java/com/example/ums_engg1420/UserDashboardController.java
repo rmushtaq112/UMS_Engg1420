@@ -11,24 +11,40 @@ import java.io.IOException;
 
 public class UserDashboardController {
 
-    @FXML private StackPane mainContent;
-    @FXML private Label lblWelcome;
-    @FXML private Button btnDashboard;
-    @FXML private Button btnMyCourses;
-    @FXML private Button btnSubjects;
-    @FXML private Button btnFacultyLogin;  // Added Faculty Login button
-    @FXML private Button btnFaculty;
-    @FXML private Button btnEvents;
-    @FXML private Button btnLogout;
+    @FXML
+    private Label MainText;
+
+    @FXML
+    private Button btnDashboard;
+
+    @FXML
+    private Button btnEvents;
+
+    @FXML
+    private Button btnFaculty;
+
+    @FXML
+    private Button btnLogout;
+
+    @FXML
+    private Button btnMyCourses;
+
+    @FXML
+    private Button btnSubjects;
+
+    @FXML
+    private Label lblWelcome;
+
+    @FXML
+    private StackPane mainContent;
 
     @FXML
     public void initialize() {
-        lblWelcome.setText("Welcome, User!");
+//        lblWelcome.setText("Welcome, User!");
 
         btnDashboard.setOnAction(e -> loadPage("UserDashboardContent.fxml"));
         btnMyCourses.setOnAction(e -> loadPage("UserCourseManagement.fxml"));
         btnSubjects.setOnAction(e -> loadPage("UserSubjects.fxml"));
-        btnFacultyLogin.setOnAction(e -> loadPage("FacultyDashboard.fxml")); // Action for Faculty Login
         btnFaculty.setOnAction(e -> loadPage("FacultyDashboard.fxml"));
         btnEvents.setOnAction(e -> loadPage("StudentEventManagement.fxml"));
         btnLogout.setOnAction(e -> logout());
