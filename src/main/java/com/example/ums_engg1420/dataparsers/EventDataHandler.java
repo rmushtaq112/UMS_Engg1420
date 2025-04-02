@@ -198,18 +198,40 @@ public class EventDataHandler extends DataHandler {
     }
 
     // Removes an event from the sheet
-    public static void deleteEvent(int rowIndex) {
+    public static void deleteEvent(String eventCode) {
+        if (eventSheet == null) {
+            System.err.println("ERROR: 'Events' sheet not found!");
+            return;
+        }
+
         int lastRowNum = eventSheet.getLastRowNum();
-        if (rowIndex >= 0 && rowIndex <= lastRowNum) {
-            Row rowToRemove = eventSheet.getRow(rowIndex);
-            if (rowToRemove != null) {
-                eventSheet.removeRow(rowToRemove);
-                // Shift remaining rows up to fill the gap
-                if (rowIndex < lastRowNum) {
-                    eventSheet.shiftRows(rowIndex + 1, lastRowNum, -1);
+        int rowToDelete = -1;
+
+        for (int i = 1; i <= lastRowNum; i++) {
+            Row row = eventSheet.getRow(i);
+            if (row == null) continue;
+
+            Cell codeCell = row.getCell(columnIndexMap.get("Event Code"));
+            if (codeCell != null && codeCell.getCellType() == CellType.STRING) {
+                String cellValue = codeCell.getStringCellValue().trim();
+                if (cellValue.equalsIgnoreCase(eventCode.trim())) {
+                    rowToDelete = i;
+                    break;
                 }
             }
-            saveData();  // Save after deletion
         }
+
+        if (rowToDelete == -1) {
+            System.out.println("code don't exist: " + eventCode);
+            return;
+        }
+
+        System.out.println("deleting row " + rowToDelete + " with code: " + eventCode);
+        eventSheet.removeRow(eventSheet.getRow(rowToDelete));
+
+        if (rowToDelete < lastRowNum) {
+            eventSheet.shiftRows(rowToDelete + 1, lastRowNum, -1); //shifts row up
+        }
+        saveData();
     }
 }
