@@ -13,15 +13,16 @@ import java.util.stream.Collectors;
 
 
 public class EventDataHandler extends DataHandler {
-
+// get the events tab
     private static final Sheet eventSheet = workbook.getSheet("Events ");  // Correct sheet name
     private static final Map<String, Integer> columnIndexMap = getColumnIndexMap(eventSheet.getRow(0)); // Map column headers
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
 
-    // Converts a row from Excel to an Event object
+    // Converts a row from Excel to an Event object, each cell is read based on its corresponding column header.
     private static Event rowToEventObj(Row row) {
         Event newEvent = new Event("PLACEHOLDER", null, null, null, null, 0, null, null, new ArrayList<>());
 
+        // Loop through all columns and populate the Event fields
         for (Map.Entry<String, Integer> entry : columnIndexMap.entrySet()) {
             String columnName = entry.getKey();
             Integer columnIndex = entry.getValue();
@@ -74,6 +75,7 @@ public class EventDataHandler extends DataHandler {
                     if (cell.getCellType() == CellType.STRING) {
                         String raw = cell.getStringCellValue().trim();
                         if (!raw.isEmpty()) {
+                            // , as delimiter -- splits here, trim extra spaces, and ignore empty strings
                             List<String> registeredStudents = Arrays.stream(raw.split(","))
                                     .map(String::trim)
                                     .filter(s -> !s.isEmpty())
@@ -91,13 +93,14 @@ public class EventDataHandler extends DataHandler {
         return newEvent;
     }
 
-    // Reads all events from Excel and returns a list
+    // Reads all events from Excel and returns a list, skips header n null/invalid rows
     public static List<Event> readEvents() {
         List<Event> eventArray = new ArrayList<>();
         if (eventSheet == null) return eventArray; // Handle missing sheet
 
-        for (int i = 1; i <= eventSheet.getLastRowNum(); i++) {
+        for (int i = 1; i <= eventSheet.getLastRowNum(); i++) {  // Start from row 1 to skip the header
             Row row = eventSheet.getRow(i);
+            // Only add valid events (skip placeholder)
             if (row != null) {
                 Event event = rowToEventObj(row);
                 if (event != null && !event.getEventCode().equals("PLACEHOLDER")) {
@@ -205,7 +208,7 @@ public class EventDataHandler extends DataHandler {
         saveData();  // Save changes
     }
 
-    // Removes an event from the sheet
+    // Removes an event from the sheet, deletes, shifts rows upward to maintain continuity in the sheet.
     public static void deleteEvent(String eventCode) {
         if (eventSheet == null) {
             System.err.println("ERROR: 'Events' sheet not found!");
@@ -215,6 +218,7 @@ public class EventDataHandler extends DataHandler {
         int lastRowNum = eventSheet.getLastRowNum();
         int rowToDelete = -1;
 
+        // Locate the row index that matches the event code
         for (int i = 1; i <= lastRowNum; i++) {
             Row row = eventSheet.getRow(i);
             if (row == null) continue;
@@ -237,12 +241,14 @@ public class EventDataHandler extends DataHandler {
         System.out.println("deleting row " + rowToDelete + " with code: " + eventCode);
         eventSheet.removeRow(eventSheet.getRow(rowToDelete));
 
+        // Shift rows up if the deleted row is not the last one
         if (rowToDelete < lastRowNum) {
             eventSheet.shiftRows(rowToDelete + 1, lastRowNum, -1); //shifts row up
         }
         saveData();
     }
 
+    //Utility method to find the row index of an event using its event code.
     public static int getRowIndexByEventCode(String eventCode) {
         if (eventSheet == null) return -1;
         for (int i = 1; i <= eventSheet.getLastRowNum(); i++) {
@@ -256,6 +262,6 @@ public class EventDataHandler extends DataHandler {
                 }
             }
         }
-        return -1; // not found
+        return -1; // if not found
     }
 }
