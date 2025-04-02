@@ -35,6 +35,7 @@ public class AdminEventController extends EventModuleInitializer {
     private TextArea descriptionField;
 
     private ObservableList<Event> eventList;
+    private Event editingEvent = null;
 
     @FXML
     public void initialize() {
@@ -119,59 +120,75 @@ public class AdminEventController extends EventModuleInitializer {
     // Edit Event
     @FXML
     private void editEvent(ActionEvent event) {
-        Event selectedEvent = tblEvents.getSelectionModel().getSelectedItem();
+        editingEvent = tblEvents.getSelectionModel().getSelectedItem();
+        if (editingEvent != null) {
+            eventCodeField.setText(editingEvent.getEventCode());
+            eventNameField.setText(editingEvent.getEventName());
+            descriptionField.setText(editingEvent.getDescription());
+            locationField.setText(editingEvent.getLocation());
 
-        if (selectedEvent != null) {
-            int selectedIndex = tblEvents.getSelectionModel().getSelectedIndex();
-
-            // Get updated values from the form
-            String eventCode = txtEventCode.getText();
-            String eventName = txtEventName.getText();
-            String description = txtDescription.getText();
-            String location = txtLocation.getText();
-            String dateTime = txtDateTime.getText();
-            String capacityStr = txtCapacity.getText();
-            String cost = txtCost.getText();
-            String headerImage = txtHeaderImage.getText();
-            String registeredStudentsStr = txtRegisteredStudents.getText();
-
-            // Validate required fields
-            if (eventCode.isEmpty() || eventName.isEmpty() || dateTime.isEmpty() || capacityStr.isEmpty()) {
-                showAlert("Error", "All required fields must be filled out.", Alert.AlertType.INFORMATION);
-                return;
-            }
-
-            int capacity;
             try {
-                capacity = Integer.parseInt(capacityStr);
-            } catch (NumberFormatException e) {
-                showAlert("Error", "Capacity must be a valid number.", Alert.AlertType.INFORMATION);
-                return;
+                String[] parts = editingEvent.getDateTime().split(" ");
+                eventDateField.setValue(LocalDate.parse(parts[0]));
+                eventTimeField.setText(parts[1]);
+            } catch (Exception e) {
+                eventDateField.setValue(null);
+                eventTimeField.clear();
             }
 
-            // Parse registered students from a comma-separated string
-            List<String> registeredStudents = Arrays.stream(registeredStudentsStr.split(","))
-                    .map(String::trim)
-                    .collect(Collectors.toList());
-
-            // Create updated event object
-            Event updatedEvent = new Event(
-                    eventCode, eventName, description, location, dateTime,
-                    capacity, cost, headerImage, registeredStudents
-            );
-
-            // Update ObservableList and Excel
-            eventList.set(selectedIndex, updatedEvent);
-            EventDataHandler.updateEvent(updatedEvent, selectedIndex + 1); // Update Excel
-
-            // Refresh table and clear form
-            refreshEntries(tblEvents);
-            clearForm();
-            showAlert("Success", "Event updated successfully!", Alert.AlertType.INFORMATION);
+            capacityField.setText(String.valueOf(editingEvent.getCapacity()));
+            costField.setText(editingEvent.getCost());
         } else {
             showAlert("Error", "Please select an event to edit.", Alert.AlertType.ERROR);
         }
+
     }
+    @FXML
+    private void saveEditedEvent(ActionEvent event) {
+        if (editingEvent == null) {
+            showAlert("Error", "No event selected to update.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        // Copy existing data
+        String eventCode = editingEvent.getEventCode();
+        String eventName = !eventNameField.getText().isEmpty() ? eventNameField.getText() : editingEvent.getEventName();
+        String description = !descriptionField.getText().isEmpty() ? descriptionField.getText() : editingEvent.getDescription();
+        String location = !locationField.getText().isEmpty() ? locationField.getText() : editingEvent.getLocation();
+
+        String date = (eventDateField.getValue() != null) ? eventDateField.getValue().toString() : editingEvent.getDateTime().split(" ")[0];
+        String time = !eventTimeField.getText().isEmpty() ? eventTimeField.getText() : editingEvent.getDateTime().split(" ")[1];
+        String dateTime = date + " " + time;
+
+        int capacity = editingEvent.getCapacity();
+        if (!capacityField.getText().isEmpty()) {
+            try {
+                capacity = Integer.parseInt(capacityField.getText());
+            } catch (NumberFormatException e) {
+                showAlert("Error", "Capacity must be a number.", Alert.AlertType.ERROR);
+                return;
+            }
+        }
+
+        String cost = !costField.getText().isEmpty() ? costField.getText() : editingEvent.getCost();
+        String headerImage = editingEvent.getHeaderImage(); // Keeping as is
+        List<String> registeredStudents = editingEvent.getRegisteredStudents(); // Keeping as is
+
+        Event updatedEvent = new Event(eventCode, eventName, description, location, dateTime, capacity, cost, headerImage, registeredStudents);
+
+        int excelRowIndex = EventDataHandler.getRowIndexByEventCode(eventCode);
+        if (excelRowIndex != -1) {
+            EventDataHandler.updateEvent(updatedEvent, excelRowIndex);
+            eventList.set(tblEvents.getSelectionModel().getSelectedIndex(), updatedEvent);
+            refreshEntries(tblEvents);
+            clearForm();
+            editingEvent = null;
+            showAlert("Success", "Event updated successfully!", Alert.AlertType.INFORMATION);
+        } else {
+            showAlert("Error", "Could not find the event in the database.", Alert.AlertType.ERROR);
+        }
+    }
+
 
     // Delete Event
     @FXML

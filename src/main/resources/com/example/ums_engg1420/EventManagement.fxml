@@ -7,8 +7,8 @@
     <Label text="Event Management" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
 
     <HBox spacing="10">
-        <TextField fx:id="eventNameField" promptText="Event Name" />
         <TextField fx:id="eventCodeField" promptText="Event Code" />
+        <TextField fx:id="eventNameField" promptText="Event Name" />
         <TextField fx:id="locationField" promptText="Location" />
     </HBox>
 
@@ -28,6 +28,7 @@
     <HBox spacing="10">
         <Button text="Add Event" onAction="#addEvent" />
         <Button text="Edit Event" onAction="#editEvent" />
+        <Button text="Save Changes" onAction="#saveEditedEvent" />
         <Button text="Delete Event" onAction="#deleteEvent" />
 <!--        <Button text="Manage Registrations" onAction="#manageRegistrations" />-->
     </HBox>
