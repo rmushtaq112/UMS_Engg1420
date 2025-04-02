@@ -234,4 +234,20 @@ public class EventDataHandler extends DataHandler {
         }
         saveData();
     }
+
+    public static int getRowIndexByEventCode(String eventCode) {
+        if (eventSheet == null) return -1;
+        for (int i = 1; i <= eventSheet.getLastRowNum(); i++) {
+            Row row = eventSheet.getRow(i);
+            if (row != null) {
+                Cell codeCell = row.getCell(columnIndexMap.get("Event Code"));
+                if (codeCell != null && codeCell.getCellType() == CellType.STRING) {
+                    if (codeCell.getStringCellValue().trim().equalsIgnoreCase(eventCode.trim())) {
+                        return i;
+                    }
+                }
+            }
+        }
+        return -1; // not found
+    }
 }
